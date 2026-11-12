@@ -273,7 +273,7 @@
                     </div>
 
                     <div class="form-row">
-                        <label>Organisation’s principal place of business:</label>
+                        <label>Organisation’s principal place of business: <span class="dev-marker">Notat 1</span></label>
                         <input type="text">
                     </div>
 
@@ -286,7 +286,7 @@
                     </div>
 
                     <div class="form-row">
-                        <strong>This organisation is:</strong> <span class="dev-marker">Notat 1</span>
+                        <strong>This organisation is:</strong> <span class="dev-marker">Notat 2</span>
                         
                         <div class="checkbox-row org-type-row">
                             <input type="radio" name="orgType" value="standalone"> 
@@ -320,7 +320,7 @@
                         (**): For organisations already operating at the date of application of this Regulation, this date shall indicate the date at which the declaration is submitted.
                     </div>
 
-                    <label>EU aerodrome(s) at which the organisation provides services, in full name and ICAO code: <span class="dev-marker">Notat 2</span></label>
+                    <label>EU aerodrome(s) at which the organisation provides services, in full name and ICAO code: <span class="dev-marker">Notat 3</span></label>
                     <table>
                         <thead>
                             <tr>
@@ -433,7 +433,7 @@
 
                 <div style="border: 1px solid black; border-top: none; margin-bottom: 20px;">
                     <div class="bordered-section">
-                        <div class="statement-title">Arrangements with the aerodrome operator(s) <span class="dev-marker">Notat 3</span></div>
+                        <div class="statement-title">Arrangements with the aerodrome operator(s) <span class="dev-marker">Notat 4</span></div>
                         <div class="checkbox-row" style="margin-bottom: 0;">
                             <input type="checkbox">
                             <div class="statement-text">
@@ -451,7 +451,7 @@
                     </div>
 
                     <div class="bordered-section">
-                        <div class="statement-title">Consent to publish contact details <span class="dev-marker">Notat 4</span></div>
+                        <div class="statement-title">Consent to publish contact details <span class="dev-marker">Notat 5</span></div>
                         <div class="statement-text" style="margin-bottom: 10px;">
                             The ground handling organisation consents to the publication of its contact details provided in this declaration, either on the website of its national competent authority or on that of EASA, or on both, once the declaration has been received by the competent authority concerned.
                         </div>
@@ -477,7 +477,7 @@
                             </div>
                         </div>
                         
-                        <label>Signature of Accountable Manager: <span class="dev-marker">Notat 5</span></label>
+                        <label>Signature of Accountable Manager: <span class="dev-marker">Notat 6</span></label>
                         <div class="signature-wrapper">
                             <div class="altinn-auth-text">Autentisering via sikker innlogging</div>
                         </div>
@@ -487,7 +487,7 @@
                 <div class="page-break"></div>
 
                 <div style="text-align: center; font-weight: bold; margin-bottom: 10px; font-style: italic; padding: 15px; border: 1px solid #000;">
-                    Annex to the Declaration (*) <span class="dev-marker">Notat 6</span>
+                    Annex to the Declaration (*) <span class="dev-marker">Notat 7</span>
                 </div>
                 
                 <div style="font-size: 0.9em; margin-bottom: 20px;">
@@ -661,17 +661,50 @@
             <h3>Notat til utvikler</h3>
 
             <div class="dev-note-card">
-                <div class="dev-note-title">Notat 1: Gjensidig utelukkende valg</div>
+                <div class="dev-note-title">Notat 1: Veiledning (Principal place of business)</div>
+                <div>
+                    Det er behov for å gjøre følgende veiledningsinformasjon tilgjengelig for brukeren ved dette feltet (f.eks. som en utvidbar tekst, informasjonsboks eller et hjelpeikon). Teksten som skal gjøres tilgjengelig er:<br><br>
+
+                    <strong>GH-ORGANISASJONERS HOVEDFORRETNINGSSTED</strong><br><br>
+
+                    a) For GH-organisasjoner som yter tjenester i mer enn én medlemsstat, og GH-organisasjoner som inngår i én enkelt foretaksgruppering av GH-organisasjoner, og som har hovedforretningssted på et territorium der traktatene får anvendelse, anses vedkommende myndighet i medlemsstaten der hovedforretningsstedet ligger, som kontaktpunkt for all informasjon knyttet til deres erklæringer og GH-virksomhet ved alle flyplasser i EU som omfattes av <a href="https://eur-lex.europa.eu/eli/reg_del/2025/20/oj" target="_blank">delegert kommisjonsforordning (EU) 2025/20</a>.<br><br>
+
+                    b) Følgende kriterier brukes for å fastslå en organisasjons hovedforretningssted:<br><br>
+
+                    1) Alle finansielle operasjoner og beslutninger som berører organisasjonen som helhet, herunder de operative aspektene, og som gjør organisasjonen i stand til ikke bare å motta midler og overskudd og gi avkastning til aksjeeierne, men også til å oppfylle sine forpliktelser og foreta forfalte betalinger. Disse forpliktelsene og betalingene spenner fra kostnader knyttet til personell og fasiliteter til kostnader knyttet til oppfyllelse av kontraktsmessige, skattemessige eller andre finansielle forpliktelser, samt utbetaling av utbytte, lønn og ansattgoder og investeringsbeslutninger. Disse økonomistyringsfunksjonene krever planlegging og forvaltning av organisasjonens midler, noe som ikke kunstig kan skilles fra organisasjonens drift. Funksjonene er derfor vesentlige for å drive en virksomhet, og er en sterk indikator på hvor hovedkontoret ligger og hvor ledelsen utøves, og på hvilket rettssystem organisasjonen har nærmest tilknytning til.<br><br>
+
+                    2) Den overordnede kontrollen med organisasjonens operative virksomhet innebærer å styre organisasjonens operative beslutninger på regelmessig basis. Et sted der tjenesteytingen overvåkes og styres fra, indikerer hvor organisasjonen kontrollerer driften fra.<br><br>
+
+                    3) Organisasjonens ansvarlige leder (accountable manager) har det endelige ansvaret for sikkerheten. Den ansvarlige lederen har ansvar for å sikre at all virksomhet kan finansieres og utføres i samsvar med gjeldende krav, og at organisasjonen er hensiktsmessig organisert og bemannet med tilstrekkelig kvalifisert personell. Ettersom den ansvarlige lederen har det endelige ansvaret for sikkerhet og etterlevelse overfor vedkommende myndighet, anbefales det at lederen enten er fast bosatt i landet der hovedforretningsstedet ligger, eller godtgjør overfor vedkommende myndighet at det finnes egnede ordninger for å ivareta ansvaret fullt ut uten å være bosatt ved hovedforretningsstedet.<br><br>
+
+                    4) Organisasjonens nøkkelpersonell (personer med ansvar for drift, sikkerhet, samsvarskontroll, opplæring osv.) som styrer og koordinerer den daglige operative virksomheten som til syvende og sist fører til at sikkerhetsmålene i EUs regelverk for flysikkerhet nås.<br><br>
+
+                    5) Hovedkontoret er stedet der alle beslutninger som påvirker utviklingen av hele selskapets administrasjon, og koordineringen av nødvendige tiltak, treffes daglig eller regelmessig.<br><br>
+
+                    6) Dokumentasjonen av de operative og finansielle beslutningene som påvirker ledelsen, kontrollen, planleggingen, koordineringen og finansieringen av organisasjonens virksomhet og drift, innenfor rammen av gjeldende regelverk, er alltid håndgripelig og kan bli gjenstand for fysisk inspeksjon og/eller vurdering fra vedkommende myndighet.<br><br>
+
+                    c) Hovedforretningsstedet for luftfartøyoperatører som utfører egenhandling (self-handling), fastsettes i samsvar med <a href="https://eur-lex.europa.eu/eli/reg/2012/965/oj" target="_blank">forordning (EU) nr. 965/2012</a>.<br><br>
+
+                    <strong>ERKLÆRING FRA GH-ORGANISASJONER MED HOVEDFORRETNINGSSTED UTENFOR TERRITORIENE DER TRAKTATENE FÅR ANVENDELSE</strong><br><br>
+
+                    Virkeområdet for punkt <a href="https://www.easa.europa.eu/en/document-library/easy-access-rules/online-publications/easy-access-rules-ground-handling?erules-id=ERULES-1963177438-23731#ERULES-1963177438-23731" target="_blank">ORGH.GEN.105</a> bokstav a) omfatter GH-organisasjoner som yter tjenester i mer enn én medlemsstat, enten som selvstendig organisasjon eller som del av én enkelt foretaksgruppering av GH-organisasjoner, og som har hovedforretningssted utenfor territoriene der traktatene får anvendelse.<br><br>
+
+                    Slike GH-organisasjoner sender inn en erklæring til vedkommende myndighet i hver medlemsstat der de yter tjenester.
+                </div>
+            </div>
+
+            <div class="dev-note-card">
+                <div class="dev-note-title">Notat 2: Gjensidig utelukkende valg</div>
                 <div>Brukeren skal kun ha mulighet til å velge én av disse tre organisasjonstypene av gangen. Valgene utelukker hverandre gjensidig, og de inaktive valgene skal gråes ut og feltene låses.</div>
             </div>
 
             <div class="dev-note-card">
-                <div class="dev-note-title">Notat 2: Oppslag av ICAO-koder</div>
+                <div class="dev-note-title">Notat 3: Oppslag av ICAO-koder</div>
                 <div>Når brukeren taster inn en 4-bokstavs ICAO-kode (f.eks. ENBO), er det ønskelig at denne slås opp i et bakenforliggende register, slik at feltene for lufthavnens navn ("Aerodrome name") og land ("State") fylles ut automatisk for å forhindre skrivefeil og sikre datakvalitet.</div>
             </div>
 
             <div class="dev-note-card">
-                <div class="dev-note-title">Notat 3: Utdypende informasjon (Arrangements)</div>
+                <div class="dev-note-title">Notat 4: Utdypende informasjon (Arrangements)</div>
                 <div>Det er behov for å gjøre underpunktene tilknyttet denne avkrysningen tilgjengelig for brukeren i form av veiledningsinformasjon (f.eks. som en utvidbar tekst, fotnote eller et hjelpeikon). Teksten som skal gjøres tilgjengelig er:<br><br>
                 a) the type of ground handling services intended to be provided at that aerodrome;<br>
                 b) the date of starting the operation at the aerodrome;<br>
@@ -680,17 +713,17 @@
             </div>
 
             <div class="dev-note-card">
-                <div class="dev-note-title">Notat 4: Veiledning (Consent to publish)</div>
+                <div class="dev-note-title">Notat 5: Veiledning (Consent to publish)</div>
                 <div>Det skal legges til en veiledende hjelpetekst for disse valgene som forklarer konsekvensen. Teksten som skal vises er: <em>"Ved å velge 'Yes', samtykker du til at EASA og/eller de nasjonale luftfartsmyndighetene publiserer kontaktinformasjonen på sine hjemmesider."</em></div>
             </div>
 
             <div class="dev-note-card">
-                <div class="dev-note-title">Notat 5: Autentisering / Signatur</div>
+                <div class="dev-note-title">Notat 6: Autentisering / Signatur</div>
                 <div>Dette feltet er kun en visuell indikator i skjemaet som viser at erklæringen krever signatur. Den faktiske, juridiske signeringen av "Accountable Manager" skal håndteres gjennom plattformens standardmekanismer for innlogging og autentisering i forbindelse med selve innsendingen av skjemaet.</div>
             </div>
 
             <div class="dev-note-card">
-                <div class="dev-note-title">Notat 6: Repeterende Annex-seksjon</div>
+                <div class="dev-note-title">Notat 7: Repeterende Annex-seksjon</div>
                 <div>Det må være mulig for brukeren å legge til flere lufthavner. Hele "Annex"-seksjonen må kunne dupliseres/repeteres for hver nye lufthavn aktøren legger inn, slik at de kan knytte spesifikke tjenester til hver enkelt stasjon de opererer på.</div>
             </div>
         </div>
