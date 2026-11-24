@@ -7,9 +7,11 @@
     <style>
         :root {
             --primary-blue: #005596;
+            --help-blue: #e8f1f8;
             --text-color: #000;
             --dev-bg: #fff3e0;
             --dev-border: #ffb74d;
+            --dev-accent: #e65100;
         }
 
         body {
@@ -19,73 +21,131 @@
             color: var(--text-color);
             background-color: #e9ecef;
             margin: 0;
-            padding: 20px;
+            padding: 0 20px 20px;
         }
 
-        /* --- Layout for Prototype with Dev Notes --- */
-        .page-wrapper {
-            display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .container {
-            flex: 0 0 210mm; /* A4 width */
-            background: white;
-            padding: 20mm;
-            box-shadow: 0 0 15px rgba(0,0,0,0.15);
-            position: relative;
-        }
-
-        /* --- Developer Notes Sidebar --- */
-        .dev-sidebar {
-            flex: 1;
-            background: white;
-            padding: 20px;
-            border-left: 5px solid #ff9800;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        /* =========================================================
+           PROTOTYPE-LAG: utviklerverktøylinje, notater og hjelpetekst
+           (ikke en del av selve skjemaet)
+           ========================================================= */
+        .dev-toolbar {
             position: sticky;
-            top: 20px;
-            max-height: 95vh;
-            overflow-y: auto;
-        }
-
-        .dev-sidebar h3 {
-            margin-top: 0;
-            color: #e65100;
-            border-bottom: 2px solid #ffe0b2;
-            padding-bottom: 10px;
-        }
-
-        .dev-note-card {
-            background: var(--dev-bg);
-            border: 1px solid var(--dev-border);
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            font-family: Consolas, monospace;
+            top: 0;
+            z-index: 50;
+            background: #fff;
+            border-bottom: 3px solid #ff9800;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 0 -20px 20px;
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            align-items: center;
             font-size: 12px;
         }
-
-        .dev-note-title {
+        .dev-toolbar strong { color: var(--dev-accent); font-size: 13px; }
+        .dev-toolbar button {
+            border: 1px solid var(--dev-border);
+            background: var(--dev-bg);
+            color: var(--dev-accent);
+            padding: 5px 10px;
+            border-radius: 4px;
             font-weight: bold;
-            color: #e65100;
-            margin-bottom: 5px;
-            font-size: 13px;
+            cursor: pointer;
+            font-size: 12px;
         }
+        .dev-toolbar button:hover { background: #ffe0b2; }
+        .legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-left: auto; color: #444; }
+        .legend span { display: inline-flex; align-items: center; gap: 5px; }
 
+        /* Klikkbar utviklernotat-markør */
         .dev-marker {
             background: #ff9800;
             color: #fff;
+            border: none;
             padding: 2px 6px;
             border-radius: 10px;
             font-size: 10px;
             font-weight: bold;
             vertical-align: super;
-            cursor: help;
+            cursor: pointer;
             margin-left: 4px;
+            font-family: Arial, sans-serif;
+        }
+        .dev-marker:hover, .dev-marker:focus-visible { background: var(--dev-accent); outline: 2px solid #ffe0b2; }
+        body.hide-dev .dev-marker,
+        body.hide-dev .dev-top-note { display: none !important; }
+
+        /* Notat-dialog */
+        dialog.note-dialog {
+            border: none;
+            border-top: 6px solid #ff9800;
+            border-radius: 6px;
+            padding: 0;
+            width: min(720px, 92vw);
+            max-height: 85vh;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            font-size: 13px;
+        }
+        dialog.note-dialog::backdrop { background: rgba(0,0,0,0.35); }
+        .note-dialog header {
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+            padding: 16px 20px 10px;
+            border-bottom: 1px solid #eee;
+            position: sticky; top: 0; background: #fff;
+        }
+        .note-dialog h2 { margin: 4px 0 0; font-size: 16px; color: var(--dev-accent); }
+        .note-dialog .note-body { padding: 14px 20px 20px; }
+        .note-dialog .close-btn {
+            border: none; background: #f1f1f1; border-radius: 4px; font-size: 18px; line-height: 1;
+            padding: 4px 10px; cursor: pointer;
+        }
+        .note-num {
+            display: inline-block; font-size: 10px; font-weight: bold; text-transform: uppercase;
+            padding: 2px 7px; border-radius: 3px; background: #ff9800; color: #fff;
+        }
+        .note-body details { margin-top: 12px; border: 1px solid #eee; padding: 6px 10px; border-radius: 4px; }
+        .note-body summary { cursor: pointer; font-weight: bold; color: #555; }
+        .all-notes-item { padding: 12px 0; border-bottom: 1px solid #eee; }
+        .all-notes-item:last-child { border-bottom: none; }
+        .all-notes-item h3 { margin: 6px 0; font-size: 14px; }
+        #notesAppendix { display: none; }
+
+        /* Hjelpetekst for sluttbruker (skal med i Altinn) */
+        .help-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 17px; height: 17px; border-radius: 50%;
+            border: 1.5px solid var(--primary-blue); background: #fff; color: var(--primary-blue);
+            font-weight: bold; font-size: 11px; cursor: pointer; margin-left: 5px; padding: 0;
+            vertical-align: middle; font-family: Arial, sans-serif; line-height: 1;
+        }
+        .help-btn[aria-expanded="true"] { background: var(--primary-blue); color: #fff; }
+        .help-text {
+            display: none;
+            background: var(--help-blue);
+            border-left: 3px solid var(--primary-blue);
+            padding: 10px 12px;
+            margin: 6px 0 10px;
+            font-size: 12px;
+            font-weight: normal;
+            font-style: normal;
+            text-align: left;
+        }
+        .help-text.open { display: block; }
+        .help-text ul { margin: 4px 0 6px; padding-left: 18px; }
+        .help-text p { margin: 0 0 6px; }
+        .help-text p:last-child, .help-text ul:last-child { margin-bottom: 0; }
+
+        /* =========================================================
+           SKJEMA (uendret fra opprinnelig mal)
+           ========================================================= */
+        .container {
+            width: 210mm; /* A4 width */
+            margin: 0 auto;
+            background: white;
+            padding: 20mm;
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
+            position: relative;
         }
 
         /* --- Header Styles --- */
@@ -118,9 +178,9 @@
 
         /* --- Form Elements --- */
         .form-row { margin-bottom: 15px; }
-        
+
         label { font-weight: bold; display: block; margin-bottom: 5px; }
-        
+
         input[type="text"], input[type="email"], input[type="date"], textarea {
             width: 100%;
             border: none;
@@ -230,506 +290,761 @@
 
         @media print {
             body { background-color: white; margin: 0; padding: 0; display: block; }
-            .page-wrapper { display: block; max-width: none; }
-            .dev-sidebar, .dev-marker, .dev-top-note { display: none !important; }
+            .dev-toolbar, .dev-marker, .dev-top-note, .help-btn, .help-text { display: none !important; }
             .container { width: 100%; max-width: none; box-shadow: none; padding: 0; margin: 0; }
             .page-break { page-break-before: always; border-top: none; margin-top: 0; padding-top: 20px; }
             .valid-code, .invalid-code, .unknown-code { background-color: transparent !important; }
+            body.print-notes #notesAppendix { display: block; page-break-before: always; }
         }
     </style>
 </head>
 <body>
 
-    <div class="page-wrapper">
-        <div class="container">
-            
-            <div class="dev-top-note" style="background-color: var(--dev-bg); border: 1px solid var(--dev-border); padding: 15px; margin-bottom: 25px; font-family: Consolas, monospace; border-radius: 4px;">
-                <strong style="color: #e65100; font-size: 14px;">Utviklernotat: Skjemamoduser og Dataintegrasjon</strong><br><br>
-                Det ønskes implementert to ulike versjoner/moduser:<br>
-                <strong>1. Ny deklarering:</strong> Et blankt skjema for aktører som deklarerer for første gang.<br>
-                <strong>2. Revisjon av deklarasjon:</strong> For å sikre en smidig og effektiv prosess, må skjemaet kunne hente informasjon "motsatt vei" (f.eks. integrasjon mot EMPIC). Ved revisjon skal feltene forhåndsutfylles med aktørens eksisterende data, slik at brukeren kun trenger å forholde seg til det som faktisk skal endres.
+    <!-- =========================================================
+         UTVIKLERVERKTØYLINJE – kun for prototypen, ikke del av skjemaet
+         ========================================================= -->
+    <div class="dev-toolbar">
+        <strong>Prototype – Deklarasjon (EU) 2025/20</strong>
+        <button type="button" id="toggleDev">Skjul utviklernotater (sluttbrukervisning)</button>
+        <button type="button" id="showAllNotes">Vis alle notater</button>
+        <button type="button" id="printWithNotes">Skriv ut med notater</button>
+        <div class="legend">
+            <span><span class="dev-marker" style="margin:0;cursor:default;vertical-align:middle">Notat</span> Til utvikler – skal <u>ikke</u> vises i skjemaet</span>
+            <span><span class="help-btn" style="margin:0;cursor:default">?</span> Hjelpetekst til søker – <u>skal</u> med i Altinn-skjemaet</span>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="dev-top-note" style="background-color: var(--dev-bg); border: 1px solid var(--dev-border); padding: 15px; margin-bottom: 25px; font-family: Consolas, monospace; border-radius: 4px;">
+            <strong style="color: #e65100; font-size: 14px;">Utviklernotat: Skjemamoduser og Dataintegrasjon</strong><br><br>
+            Det ønskes implementert to ulike versjoner/moduser:<br>
+            <strong>1. Ny deklarering:</strong> Et blankt skjema for aktører som deklarerer for første gang.<br>
+            <strong>2. Revisjon av deklarasjon:</strong> For å sikre en smidig og effektiv prosess, må skjemaet kunne hente informasjon "motsatt vei" (f.eks. integrasjon mot EMPIC). Ved revisjon skal feltene forhåndsutfylles med aktørens eksisterende data, slik at brukeren kun trenger å forholde seg til det som faktisk skal endres.
+            <br><br>
+            <strong style="color: #e65100;">Hjelpetekster:</strong> Alle blå <strong>?</strong>-knapper viser en hjelpetekst til søkeren. Disse tekstene er ferdig formulert
+            og skal implementeres i Altinn-skjemaet (f.eks. med Altinns hjelpetekst-komponent). Selve skjemateksten skal ikke endres.
+            Klikk på de oransje <em>Notat</em>-merkene for å lese utviklernotatene.
+        </div>
+
+        <form id="declarationForm">
+            <div class="header-bar">Appendix 1 — DECLARATION FORM</div>
+            <div class="reg-ref">Regulation (EU) 2025/20</div>
+
+            <div class="main-title">
+                DECLARATION<br>
+                <span style="font-size: 0.9em; text-transform: none; font-weight: normal;">
+                    in accordance with <a href="https://www.easa.europa.eu/en/regulations/ground-handling" target="_blank">Commission Delegated Regulation (EU) 2025/20</a>
+                </span>
             </div>
 
-            <form id="declarationForm">
-                <div class="header-bar">Appendix 1 — DECLARATION FORM</div>
-                <div class="reg-ref">Regulation (EU) 2025/20</div>
-
-                <div class="main-title">
-                    DECLARATION<br>
-                    <span style="font-size: 0.9em; text-transform: none; font-weight: normal;">
-                        in accordance with <a href="https://www.easa.europa.eu/en/regulations/ground-handling" target="_blank">Commission Delegated Regulation (EU) 2025/20</a>
-                    </span>
+            <div style="border: 1px solid black; padding: 15px; margin-bottom: 20px;">
+                <div class="form-row">
+                    <label for="f-orgname">Name of organisation:</label>
+                    <input type="text" id="f-orgname">
                 </div>
 
-                <div style="border: 1px solid black; padding: 15px; margin-bottom: 20px;">
-                    <div class="form-row">
-                        <label>Name of organisation:</label>
-                        <input type="text">
+                <div class="form-row">
+                    <label for="f-am">Name, email and telephone number of the accountable manager:
+                        <button type="button" class="help-btn" aria-controls="h-am" aria-expanded="false" aria-label="Hjelp">?</button></label>
+                    <div class="help-text" id="h-am">
+                        <p>Ansvarlig leder (accountable manager) er den personen som har myndighet i organisasjonen til å sørge for at all virksomhet
+                        kan finansieres og utføres i tråd med regelverket. Det er også denne personen som signerer deklarasjonen.</p>
+                        <p>Skriv navn, e-postadresse og telefonnummer.</p>
                     </div>
+                    <input type="text" id="f-am">
+                </div>
 
-                    <div class="form-row">
-                        <label>Name, email and telephone number of the accountable manager:</label>
-                        <input type="text">
+                <div class="form-row">
+                    <label for="f-ppob">Organisation’s principal place of business:
+                        <button type="button" class="help-btn" aria-controls="h-ppob" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="1"></button></label>
+                    <div class="help-text" id="h-ppob">
+                        <p><strong>Hva er hovedforretningssted?</strong><br>
+                        Det er stedet organisasjonen faktisk ledes fra. Det er ikke nødvendigvis den adressen organisasjonen er registrert på.</p>
+                        <p>Vanligvis er hovedforretningsstedet der:</p>
+                        <ul>
+                            <li>de økonomiske beslutningene for hele organisasjonen tas</li>
+                            <li>den daglige driften styres og følges opp</li>
+                            <li>ansvarlig leder og nøkkelpersonell (for eksempel innen drift, sikkerhet, samsvar og opplæring) har arbeidsstedet sitt</li>
+                            <li>dokumentasjonen av viktige drifts- og økonomibeslutninger oppbevares, slik at myndigheten kan se på den</li>
+                        </ul>
+                        <p>Ansvarlig leder bør bo i landet der hovedforretningsstedet ligger. Hvis ikke, må dere kunne vise myndigheten at ansvaret likevel blir ivaretatt på en god måte.</p>
+                        <p><strong>Hvorfor spør vi om dette?</strong><br>
+                        Hovedforretningsstedet avgjør hvilken myndighet dere skal forholde dere til:</p>
+                        <ul>
+                            <li><strong>Hovedforretningssted i EU/EØS</strong>, og dere yter tjenester i flere land eller er en del av en gruppe av bakketjenesteselskaper:
+                                Myndigheten i landet der hovedforretningsstedet ligger, er kontaktpunktet for deklarasjonen og for virksomheten deres på alle flyplasser i EU.</li>
+                            <li><strong>Hovedforretningssted utenfor EU/EØS</strong>, og dere yter tjenester i flere land:
+                                Dere må sende en egen deklarasjon til myndigheten i hvert land der dere yter tjenester.</li>
+                            <li><strong>Luftfartøyoperatører som utfører egenhandling (self-handling):</strong>
+                                Hovedforretningsstedet er det samme som er fastsatt etter <a href="https://eur-lex.europa.eu/eli/reg/2012/965/oj" target="_blank">forordning (EU) nr. 965/2012</a> – normalt det samme som for AOC-sertifikatet deres.</li>
+                        </ul>
                     </div>
+                    <input type="text" id="f-ppob">
+                </div>
 
-                    <div class="form-row">
-                        <label>Organisation’s principal place of business: <span class="dev-marker">Notat 1</span></label>
-                        <input type="text">
-                    </div>
-
-                    <div class="form-row" style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div style="width: 60%;"><strong>Provision of ground handling services:</strong></div>
+                <div class="form-row">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="width: 60%;"><strong>Provision of ground handling services:</strong>
+                            <button type="button" class="help-btn" aria-controls="h-provision" aria-expanded="false" aria-label="Hjelp">?</button></div>
                         <div style="width: 40%; text-align: right;">
                             To third-party aircraft operators <input type="checkbox"><br>
                             Self-handling<sup>(*)</sup> <input type="checkbox">
                         </div>
                     </div>
-
-                    <div class="form-row">
-                        <strong>This organisation is:</strong> <span class="dev-marker">Notat 2</span>
-                        
-                        <div class="checkbox-row org-type-row">
-                            <input type="radio" name="orgType" value="standalone"> 
-                            <span>a stand-alone ground handling organisation</span>
-                        </div>
-                        
-                        <div class="checkbox-row org-type-row">
-                            <input type="radio" name="orgType" value="integrated_aerodrome"> 
-                            <span>integrated part of an aerodrome operator, namely <input type="text" style="width: 50%; display: inline;"></span>
-                        </div>
-                        
-                        <div class="checkbox-row org-type-row" style="flex-wrap: wrap;">
-                            <input type="radio" name="orgType" value="integrated_carrier"> 
-                            <span>integrated part of an aircraft operator or of a single air carrier business grouping, namely</span>
-                            <input type="text" class="indent" style="width: 95%;">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <label>Name, email and telephone number of the person assigned with the ground handling safety function:</label>
-                        <input type="text">
-                    </div>
-
-                    <div class="form-row">
-                        <label>Intended date of starting ground handling operations<sup>(**)</sup>:</label>
-                        <input type="date">
-                    </div>
-
-                    <div style="font-size: 0.8em; margin: 15px 0;">
-                        (*): Including to aircraft operators part of the same single air carrier business grouping.<br>
-                        (**): For organisations already operating at the date of application of this Regulation, this date shall indicate the date at which the declaration is submitted.
-                    </div>
-
-                    <label>EU aerodrome(s) at which the organisation provides services, in full name and ICAO code: <span class="dev-marker">Notat 3</span></label>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="5%">Nº</th>
-                                <th width="50%">Aerodrome name</th>
-                                <th width="20%">ICAO code</th>
-                                <th width="25%">State</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="lookup-row">
-                                <td>1</td>
-                                <td><input type="text" class="field-name" placeholder="Auto-fills..."></td>
-                                <td><input type="text" class="field-icao" placeholder="e.g. ENGM" maxlength="4"></td>
-                                <td><input type="text" class="field-state" placeholder="Auto-fills..."></td>
-                            </tr>
-                            <tr class="lookup-row">
-                                <td>2</td>
-                                <td><input type="text" class="field-name"></td>
-                                <td><input type="text" class="field-icao" maxlength="4"></td>
-                                <td><input type="text" class="field-state"></td>
-                            </tr>
-                            <tr class="lookup-row">
-                                <td>3</td>
-                                <td><input type="text" class="field-name"></td>
-                                <td><input type="text" class="field-icao" maxlength="4"></td>
-                                <td><input type="text" class="field-state"></td>
-                            </tr>
-                            <tr class="lookup-row">
-                                <td>4</td>
-                                <td><input type="text" class="field-name"></td>
-                                <td><input type="text" class="field-icao" maxlength="4"></td>
-                                <td><input type="text" class="field-state"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div style="border: 1px solid black; margin-top: 20px;">
-                    <div style="padding: 5px 10px; font-weight: bold; border-bottom: 1px solid black;">Statements</div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">Management System</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">The ground handling organisation has developed and implements a management system that includes a safety policy, safety risk management, and procedures for the provision of ground handling service(s) covered by this declaration, in accordance with the essential requirements set out in point 4.2 of Annex VII to Regulation (EU) 2018/1139 and in point ORGH.MGM.200 (Management system) of Annex I to Delegated Regulation (EU) 2025/20.</div>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">AltMoC</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">(If applicable)<br>The AltMoC with references to the associated AMC they replace have been submitted to the competent authority.</div>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">GH Manual</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">The ground handling services are carried out in accordance with the ground handling manual established as part of the essential requirements set out in point 4.2.3. of Annex VII to Regulation (EU) 2018/1139 and as required by point ORGH.DOC.110 of Annex I to Delegated Regulation (EU) 2025/20.</div>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">GSE</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">All pieces of GSE used are current with the maintenance programme as specified in Subpart ORGH.GSE of Annex I to Delegated Regulation (EU) 2025/20.</div>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">Training</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">All ground handling personnel are trained in accordance with Subpart ORGH.TRG of Annex I to Delegated Regulation (EU) 2025/20 and their competence is maintained so that they perform their tasks safely and according to the standards established by the ground handling organisation.</div>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">Occurrence Reporting</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">The ground handling organisation complies and will continue to comply with the occurrence-reporting obligations set out in [the essential requirements] point 4.2.2 of Annex VII to Regulation (EU) 2018/1139 and with the provisions of Regulation (EU) No 376/2014 and their delegated and implementing acts.</div>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">Use of Industry Standards</div>
-                        <div class="checkbox-row">
-                            <input type="checkbox">
-                            <div class="statement-text">(If applicable)<br>The ground handling organisation implements industry standards and good practices.</div>
-                        </div>
-                        <div style="margin-left: 30px; margin-top: 5px;">
-                            <label>Name of the industry standards / good practices:</label>
-                            <textarea rows="2" style="border: 1px solid #ccc; width: 100%;"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <div class="statement-title">Notification of Changes</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">The ground handling organisation will notify the competent authority of any changes to its organisation, the components of its management system, and its operation as declared herein and as detailed in point ORGH.DEC.100 of Annex I to Delegated Regulation (EU) 2025/20.</div>
-                        </div>
+                    <div class="help-text" id="h-provision">
+                        <p>Kryss av for ett av alternativene eller begge.</p>
+                        <ul>
+                            <li><strong>To third-party aircraft operators:</strong> Dere yter bakketjenester til andre luftfartøyoperatører (flyselskaper) enn dere selv.</li>
+                            <li><strong>Self-handling (egenhandling):</strong> Dere er en luftfartøyoperatør som utfører bakketjenester for egne flygninger.
+                                Det gjelder også tjenester dere yter til luftfartøyoperatører i samme konsern (single air carrier business grouping).</li>
+                        </ul>
                     </div>
                 </div>
 
-                <div style="border: 1px solid black; border-top: none; margin-bottom: 20px;">
-                    <div class="bordered-section">
-                        <div class="statement-title">Arrangements with the aerodrome operator(s) <span class="dev-marker">Notat 4</span></div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">
-                                The ground handling organisation confirms that all the necessary arrangements with the aerodrome operator(s) have been duly made in advance of starting operation.
-                            </div>
-                        </div>
+                <div class="form-row">
+                    <strong>This organisation is:</strong>
+                    <button type="button" class="help-btn" aria-controls="h-orgtype" aria-expanded="false" aria-label="Hjelp">?</button>
+                    <button type="button" class="dev-marker" data-note="2"></button>
+                    <div class="help-text" id="h-orgtype">
+                        <p>Velg ett av alternativene:</p>
+                        <ul>
+                            <li><strong>Stand-alone ground handling organisation:</strong> Dere er en egen virksomhet som yter bakketjenester.</li>
+                            <li><strong>Integrated part of an aerodrome operator:</strong> Bakketjenestene utføres av en del av en flyplassoperatør. Skriv navnet på flyplassoperatøren.</li>
+                            <li><strong>Integrated part of an aircraft operator or of a single air carrier business grouping:</strong> Bakketjenestene utføres av en del av et flyselskap eller et flyselskapskonsern. Skriv navnet på flyselskapet eller konsernet.</li>
+                        </ul>
                     </div>
 
-                    <div class="bordered-section">
-                        <div class="statement-title">Correctness of Information</div>
-                        <div class="checkbox-row" style="margin-bottom: 0;">
-                            <input type="checkbox">
-                            <div class="statement-text">The ground handling organisation confirms that the information disclosed in this declaration, including all Annexes, is correct.</div>
-                        </div>
+                    <div class="checkbox-row org-type-row">
+                        <input type="radio" name="orgType" value="standalone">
+                        <span>a stand-alone ground handling organisation</span>
                     </div>
 
-                    <div class="bordered-section">
-                        <div class="statement-title">Consent to publish contact details <span class="dev-marker">Notat 5</span></div>
-                        <div class="statement-text" style="margin-bottom: 10px;">
-                            The ground handling organisation consents to the publication of its contact details provided in this declaration, either on the website of its national competent authority or on that of EASA, or on both, once the declaration has been received by the competent authority concerned.
-                        </div>
-                        <div style="display: flex; gap: 30px; margin-left: 20px; font-weight: bold;">
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="radio" name="consent_pub" value="yes" required> Yes
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="radio" name="consent_pub" value="no" required> No
-                            </label>
-                        </div>
+                    <div class="checkbox-row org-type-row">
+                        <input type="radio" name="orgType" value="integrated_aerodrome">
+                        <span>integrated part of an aerodrome operator, namely <input type="text" style="width: 50%; display: inline;"></span>
                     </div>
 
-                    <div class="bordered-section">
-                        <div style="display: flex; gap: 20px; margin-bottom: 10px;">
-                            <div style="flex: 0 0 160px;">
-                                <label>Date:</label>
-                                <input type="date">
-                            </div>
-                            <div style="flex: 1;">
-                                <label>Name of Accountable Manager:</label>
-                                <input type="text" placeholder="Type Full Name here">
-                            </div>
-                        </div>
-                        
-                        <label>Signature of Accountable Manager: <span class="dev-marker">Notat 6</span></label>
-                        <div class="signature-wrapper">
-                            <div class="altinn-auth-text">Autentisering via sikker innlogging</div>
-                        </div>
+                    <div class="checkbox-row org-type-row" style="flex-wrap: wrap;">
+                        <input type="radio" name="orgType" value="integrated_carrier">
+                        <span>integrated part of an aircraft operator or of a single air carrier business grouping, namely</span>
+                        <input type="text" class="indent" style="width: 95%;">
                     </div>
                 </div>
 
-                <div class="page-break"></div>
-
-                <div style="text-align: center; font-weight: bold; margin-bottom: 10px; font-style: italic; padding: 15px; border: 1px solid #000;">
-                    Annex to the Declaration (*) <span class="dev-marker">Notat 7</span>
-                </div>
-                
-                <div style="font-size: 0.9em; margin-bottom: 20px;">
-                    (*) To be filled individually for each aerodrome where the organisation provides ground handling services under this declaration.
-                </div>
-
-                <div style="border: 1px solid black;">
-                    <div class="bordered-section lookup-row">
-                        <strong>Annex No <input type="text" style="width: 50px; display: inline;"> to the Declaration for</strong>
-                        <div style="display: flex; gap: 10px; margin-top: 5px; align-items: center;">
-                            <input type="text" class="field-icao" placeholder="ICAO (2)" style="width: 80px; text-transform: uppercase;" maxlength="4">
-                            <input type="text" class="field-name" placeholder="Aerodrome Name (1)" style="flex-grow: 1;">
-                            <input type="hidden" class="field-state">
-                        </div>
+                <div class="form-row">
+                    <label for="f-safety">Name, email and telephone number of the person assigned with the ground handling safety function:
+                        <button type="button" class="help-btn" aria-controls="h-safety" aria-expanded="false" aria-label="Hjelp">?</button></label>
+                    <div class="help-text" id="h-safety">
+                        <p>Dette er personen som har ansvaret for å utvikle, drive og vedlikeholde organisasjonens sikkerhetsstyring
+                        (ofte kalt sikkerhetsleder eller «safety manager»).</p>
+                        <p>Skriv navn, e-postadresse og telefonnummer.</p>
                     </div>
-
-                    <div class="bordered-section">
-                        <strong>(1) Name, email and telephone number of the representative of the ground handling organisation at the aerodrome referred to in this Annex:</strong>
-                        <input type="text" style="margin-top: 10px;">
-                    </div>
-
-                    <div class="bordered-section">
-                        <strong>(2) Name, email and telephone number of the person responsible for the safety management at the aerodrome referred to in this Annex (*):</strong>
-                        <input type="text" style="margin-top: 10px;">
-                        <div style="font-size: 0.8em; font-style: italic; margin-top: 5px;">
-                            Note: The same person may cumulate the responsibilities referred to in points (1) and (2) and may be responsible for more than one aerodrome.
-                        </div>
-                    </div>
-
-                    <div class="bordered-section">
-                        <strong>Starting date of operation at this aerodrome (*):</strong>
-                        <input type="date" style="margin-top: 10px;">
-                        <div style="font-size: 0.8em; margin-top: 10px;">
-                            (*) If the organisation already provides services at this aerodrome at the date when this Regulation becomes applicable, this date shall indicate the date when the declaration is submitted.
-                        </div>
-                    </div>
+                    <input type="text" id="f-safety">
                 </div>
 
-                <div style="margin-top: 20px; font-weight: bold;">
-                    List of ground handling services provided at the aerodrome covered by this Annex to the Declaration, pursuant to <a href="https://www.easa.europa.eu/en/regulations/ground-handling" target="_blank">Article 2(2) of Delegated Regulation (EU) 2025/20</a>
+                <div class="form-row">
+                    <label for="f-start">Intended date of starting ground handling operations<sup>(**)</sup>:
+                        <button type="button" class="help-btn" aria-controls="h-start" aria-expanded="false" aria-label="Hjelp">?</button></label>
+                    <div class="help-text" id="h-start">
+                        <p>Skriv datoen dere planlegger å begynne med bakketjenester.</p>
+                        <p>Var dere allerede i drift den dagen forordningen begynte å gjelde? Da skriver dere datoen dere sender inn denne deklarasjonen.</p>
+                    </div>
+                    <input type="date" id="f-start">
                 </div>
 
-                <table style="width: 100%; margin-top: 10px;">
-                    <tr>
-                        <td>Passenger handling (Article 2(2), point (a)) — please specify:<br><input type="text"></td>
-                        <td width="5%" align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Handling of passengers with reduced mobility (Article 2(2), point (a))</td>
-                        <td width="5%" align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Baggage handling (Article 2(2), point (b)) — please specify:<br><input type="text"></td>
-                        <td width="5%" align="center"><input type="checkbox"></td>
-                    </tr>
+                <div style="font-size: 0.8em; margin: 15px 0;">
+                    (*): Including to aircraft operators part of the same single air carrier business grouping.<br>
+                    (**): For organisations already operating at the date of application of this Regulation, this date shall indicate the date at which the declaration is submitted.
+                </div>
 
-                    <tr>
-                        <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Aircraft servicing</td>
-                    </tr>
-
-                    <tr>
-                        <td>Operation of GSE used for ground handling services (Article 2(2), point (c)(i))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Aircraft refuelling and defuelling – into-plane fuelling services (Article 2(2), point (c)(ii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Aircraft toilet servicing (Article 2(2), point (c)(iii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Aircraft potable water servicing (Article 2(2), point (c)(iv))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Aircraft exterior cleaning (Article 2(2), point (c)(v))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Aircraft de-icing/anti-icing (Article 2(2), point (c)(vi)); also specify if supervision of de-icing/anti-icing is provided:<br>
-                            <input type="text">
-                        </td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Turnaround activities</td>
-                    </tr>
-
-                    <tr>
-                        <td>Aircraft arrival activities (Article 2(2), point (d)(i))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Aircraft loading/unloading (Article 2(2), point (d)(ii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Loading supervision (Article 2(2), point (d)(ii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Aircraft departure activities (Article 2(2), point (d)(iii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Aircraft towing/pushback (Article 2(2), point (d)(iv)):
-                            <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
-                                <div><label><input type="checkbox"> Towing / Pushback</label></div>
-                                <div><label><input type="checkbox"> Vehicle operation</label></div>
-                                <div><label><input type="checkbox"> Headset communication</label></div>
-                                <div><label><input type="checkbox"> Wing-person guidance</label></div>
-                            </div>
-                        </td>
-                        <td align="center" style="vertical-align: top;"><input type="checkbox"></td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Cargo and mail handling</td>
-                    </tr>
-                    <tr>
-                        <td>Cargo acceptance on behalf of the aircraft operator (Article 2(2), point (e)(i))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Final build-up and storage (Article 2(2), point (e)(ii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Final weighing and tagging of ULD (Article 2(2), point (e)(iii))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Final checks before air transportation (Article 2(2), point (e)(iv))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Ground transportation of cargo/mail between the point of final checks and the aircraft (Article 2(2), point (e)(v))</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Dangerous goods</td>
-                    </tr>
-                    <tr>
-                        <td>Passenger handling</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Baggage handling</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Dangerous goods acceptance as cargo</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td>Dangerous goods handling as cargo</td>
-                        <td align="center"><input type="checkbox"></td>
-                    </tr>
+                <label for="icao-1">EU aerodrome(s) at which the organisation provides services, in full name and ICAO code:
+                    <button type="button" class="help-btn" aria-controls="h-aerodromes" aria-expanded="false" aria-label="Hjelp">?</button>
+                    <button type="button" class="dev-marker" data-note="3"></button></label>
+                <div class="help-text" id="h-aerodromes">
+                    <p>Før opp alle flyplassene i EU/EØS der dere yter bakketjenester.</p>
+                    <p>Skriv flyplassens ICAO-kode (fire bokstaver, for eksempel ENGM for Oslo lufthavn). Da fylles navn og land ut automatisk.</p>
+                    <p>For hver flyplass må dere også fylle ut et eget vedlegg (<em>Annex to the Declaration</em>) nederst i skjemaet.</p>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="5%">Nº</th>
+                            <th width="50%">Aerodrome name</th>
+                            <th width="20%">ICAO code</th>
+                            <th width="25%">State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="lookup-row">
+                            <td>1</td>
+                            <td><input type="text" class="field-name" placeholder="Auto-fills..."></td>
+                            <td><input type="text" class="field-icao" id="icao-1" placeholder="e.g. ENGM" maxlength="4"></td>
+                            <td><input type="text" class="field-state" placeholder="Auto-fills..."></td>
+                        </tr>
+                        <tr class="lookup-row">
+                            <td>2</td>
+                            <td><input type="text" class="field-name"></td>
+                            <td><input type="text" class="field-icao" maxlength="4"></td>
+                            <td><input type="text" class="field-state"></td>
+                        </tr>
+                        <tr class="lookup-row">
+                            <td>3</td>
+                            <td><input type="text" class="field-name"></td>
+                            <td><input type="text" class="field-icao" maxlength="4"></td>
+                            <td><input type="text" class="field-state"></td>
+                        </tr>
+                        <tr class="lookup-row">
+                            <td>4</td>
+                            <td><input type="text" class="field-name"></td>
+                            <td><input type="text" class="field-icao" maxlength="4"></td>
+                            <td><input type="text" class="field-state"></td>
+                        </tr>
+                    </tbody>
                 </table>
+            </div>
 
-            </form>
-        </div>
+            <div style="border: 1px solid black; margin-top: 20px;">
+                <div style="padding: 5px 10px; font-weight: bold; border-bottom: 1px solid black;">Statements</div>
 
-        <div class="dev-sidebar">
-            <h3>Notat til utvikler</h3>
+                <div class="bordered-section">
+                    <div class="statement-title">Management System
+                        <button type="button" class="help-btn" aria-controls="h-mgmt" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-mgmt">
+                        Her bekrefter dere at organisasjonen har et styringssystem som er tatt i bruk. Det skal blant annet inneholde en sikkerhetspolicy,
+                        styring av sikkerhetsrisiko og prosedyrer for bakketjenestene dere deklarerer.
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">The ground handling organisation has developed and implements a management system that includes a safety policy, safety risk management, and procedures for the provision of ground handling service(s) covered by this declaration, in accordance with the essential requirements set out in point 4.2 of Annex VII to Regulation (EU) 2018/1139 and in point ORGH.MGM.200 (Management system) of Annex I to Delegated Regulation (EU) 2025/20.</div>
+                    </div>
+                </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 1: Veiledning (Principal place of business)</div>
-                <div>
-                    Det er behov for å gjøre følgende veiledningsinformasjon tilgjengelig for brukeren ved dette feltet (f.eks. som en utvidbar tekst, informasjonsboks eller et hjelpeikon). Teksten som skal gjøres tilgjengelig er:<br><br>
+                <div class="bordered-section">
+                    <div class="statement-title">AltMoC
+                        <button type="button" class="help-btn" aria-controls="h-altmoc" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-altmoc">
+                        <p><strong>Kryss bare av hvis dette gjelder dere.</strong></p>
+                        <p>EASA publiserer akseptable samsvarsmetoder (AMC). De viser hvordan kravene i regelverket kan oppfylles.
+                        Hvis dere oppfyller kravene på en annen måte enn det AMC beskriver, kalles det alternative samsvarsmetoder (AltMoC).</p>
+                        <p>Kryss av for å bekrefte at dere har sendt de alternative samsvarsmetodene til myndigheten, med henvisning til hvilken AMC de erstatter.
+                        Bruker dere ikke alternative samsvarsmetoder, lar dere feltet stå tomt.</p>
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">(If applicable)<br>The AltMoC with references to the associated AMC they replace have been submitted to the competent authority.</div>
+                    </div>
+                </div>
 
-                    <strong>GH-ORGANISASJONERS HOVEDFORRETNINGSSTED</strong><br><br>
+                <div class="bordered-section">
+                    <div class="statement-title">GH Manual
+                        <button type="button" class="help-btn" aria-controls="h-manual" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-manual">
+                        Her bekrefter dere at bakketjenestene utføres slik det er beskrevet i organisasjonens håndbok for bakketjenester (ground handling manual).
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">The ground handling services are carried out in accordance with the ground handling manual established as part of the essential requirements set out in point 4.2.3. of Annex VII to Regulation (EU) 2018/1139 and as required by point ORGH.DOC.110 of Annex I to Delegated Regulation (EU) 2025/20.</div>
+                    </div>
+                </div>
 
-                    a) For GH-organisasjoner som yter tjenester i mer enn én medlemsstat, og GH-organisasjoner som inngår i én enkelt foretaksgruppering av GH-organisasjoner, og som har hovedforretningssted på et territorium der traktatene får anvendelse, anses vedkommende myndighet i medlemsstaten der hovedforretningsstedet ligger, som kontaktpunkt for all informasjon knyttet til deres erklæringer og GH-virksomhet ved alle flyplasser i EU som omfattes av <a href="https://eur-lex.europa.eu/eli/reg_del/2025/20/oj" target="_blank">delegert kommisjonsforordning (EU) 2025/20</a>.<br><br>
+                <div class="bordered-section">
+                    <div class="statement-title">GSE
+                        <button type="button" class="help-btn" aria-controls="h-gse" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-gse">
+                        <p>GSE (ground support equipment) er bakkeutstyr som brukes til å betjene luftfartøy, for eksempel trapper, lastebånd, lastere og slepekjøretøy.</p>
+                        <p>Her bekrefter dere at alt bakkeutstyr dere bruker, er vedlikeholdt slik vedlikeholdsprogrammet krever.</p>
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">All pieces of GSE used are current with the maintenance programme as specified in Subpart ORGH.GSE of Annex I to Delegated Regulation (EU) 2025/20.</div>
+                    </div>
+                </div>
 
-                    b) Følgende kriterier brukes for å fastslå en organisasjons hovedforretningssted:<br><br>
+                <div class="bordered-section">
+                    <div class="statement-title">Training
+                        <button type="button" class="help-btn" aria-controls="h-training" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-training">
+                        Her bekrefter dere at alle som utfører bakketjenester, har fått opplæring etter kravene i regelverket,
+                        og at kompetansen deres holdes ved like slik at de kan gjøre jobben trygt og etter organisasjonens egne standarder.
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">All ground handling personnel are trained in accordance with Subpart ORGH.TRG of Annex I to Delegated Regulation (EU) 2025/20 and their competence is maintained so that they perform their tasks safely and according to the standards established by the ground handling organisation.</div>
+                    </div>
+                </div>
 
-                    1) Alle finansielle operasjoner og beslutninger som berører organisasjonen som helhet, herunder de operative aspektene, og som gjør organisasjonen i stand til ikke bare å motta midler og overskudd og gi avkastning til aksjeeierne, men også til å oppfylle sine forpliktelser og foreta forfalte betalinger. Disse forpliktelsene og betalingene spenner fra kostnader knyttet til personell og fasiliteter til kostnader knyttet til oppfyllelse av kontraktsmessige, skattemessige eller andre finansielle forpliktelser, samt utbetaling av utbytte, lønn og ansattgoder og investeringsbeslutninger. Disse økonomistyringsfunksjonene krever planlegging og forvaltning av organisasjonens midler, noe som ikke kunstig kan skilles fra organisasjonens drift. Funksjonene er derfor vesentlige for å drive en virksomhet, og er en sterk indikator på hvor hovedkontoret ligger og hvor ledelsen utøves, og på hvilket rettssystem organisasjonen har nærmest tilknytning til.<br><br>
+                <div class="bordered-section">
+                    <div class="statement-title">Occurrence Reporting
+                        <button type="button" class="help-btn" aria-controls="h-occurrence" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-occurrence">
+                        Her bekrefter dere at organisasjonen rapporterer luftfartshendelser (for eksempel ulykker, hendelser og andre forhold som kan påvirke sikkerheten)
+                        slik reglene for hendelsesrapportering krever, og at dere vil fortsette å gjøre det.
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">The ground handling organisation complies and will continue to comply with the occurrence-reporting obligations set out in [the essential requirements] point 4.2.2 of Annex VII to Regulation (EU) 2018/1139 and with the provisions of Regulation (EU) No 376/2014 and their delegated and implementing acts.</div>
+                    </div>
+                </div>
 
-                    2) Den overordnede kontrollen med organisasjonens operative virksomhet innebærer å styre organisasjonens operative beslutninger på regelmessig basis. Et sted der tjenesteytingen overvåkes og styres fra, indikerer hvor organisasjonen kontrollerer driften fra.<br><br>
+                <div class="bordered-section">
+                    <div class="statement-title">Use of Industry Standards
+                        <button type="button" class="help-btn" aria-controls="h-industry" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-industry">
+                        <p><strong>Kryss bare av hvis dette gjelder dere.</strong></p>
+                        <p>Følger dere bransjestandarder eller anerkjent god praksis, krysser dere av og skriver navnet på standarden(e) i feltet under.
+                        Eksempler er IATA Ground Operations Manual (IGOM), IATA Airport Handling Manual (AHM) og ISAGO.</p>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox">
+                        <div class="statement-text">(If applicable)<br>The ground handling organisation implements industry standards and good practices.</div>
+                    </div>
+                    <div style="margin-left: 30px; margin-top: 5px;">
+                        <label>Name of the industry standards / good practices:</label>
+                        <textarea rows="2" style="border: 1px solid #ccc; width: 100%;"></textarea>
+                    </div>
+                </div>
 
-                    3) Organisasjonens ansvarlige leder (accountable manager) har det endelige ansvaret for sikkerheten. Den ansvarlige lederen har ansvar for å sikre at all virksomhet kan finansieres og utføres i samsvar med gjeldende krav, og at organisasjonen er hensiktsmessig organisert og bemannet med tilstrekkelig kvalifisert personell. Ettersom den ansvarlige lederen har det endelige ansvaret for sikkerhet og etterlevelse overfor vedkommende myndighet, anbefales det at lederen enten er fast bosatt i landet der hovedforretningsstedet ligger, eller godtgjør overfor vedkommende myndighet at det finnes egnede ordninger for å ivareta ansvaret fullt ut uten å være bosatt ved hovedforretningsstedet.<br><br>
-
-                    4) Organisasjonens nøkkelpersonell (personer med ansvar for drift, sikkerhet, samsvarskontroll, opplæring osv.) som styrer og koordinerer den daglige operative virksomheten som til syvende og sist fører til at sikkerhetsmålene i EUs regelverk for flysikkerhet nås.<br><br>
-
-                    5) Hovedkontoret er stedet der alle beslutninger som påvirker utviklingen av hele selskapets administrasjon, og koordineringen av nødvendige tiltak, treffes daglig eller regelmessig.<br><br>
-
-                    6) Dokumentasjonen av de operative og finansielle beslutningene som påvirker ledelsen, kontrollen, planleggingen, koordineringen og finansieringen av organisasjonens virksomhet og drift, innenfor rammen av gjeldende regelverk, er alltid håndgripelig og kan bli gjenstand for fysisk inspeksjon og/eller vurdering fra vedkommende myndighet.<br><br>
-
-                    c) Hovedforretningsstedet for luftfartøyoperatører som utfører egenhandling (self-handling), fastsettes i samsvar med <a href="https://eur-lex.europa.eu/eli/reg/2012/965/oj" target="_blank">forordning (EU) nr. 965/2012</a>.<br><br>
-
-                    <strong>ERKLÆRING FRA GH-ORGANISASJONER MED HOVEDFORRETNINGSSTED UTENFOR TERRITORIENE DER TRAKTATENE FÅR ANVENDELSE</strong><br><br>
-
-                    Virkeområdet for punkt <a href="https://www.easa.europa.eu/en/document-library/easy-access-rules/online-publications/easy-access-rules-ground-handling?erules-id=ERULES-1963177438-23731#ERULES-1963177438-23731" target="_blank">ORGH.GEN.105</a> bokstav a) omfatter GH-organisasjoner som yter tjenester i mer enn én medlemsstat, enten som selvstendig organisasjon eller som del av én enkelt foretaksgruppering av GH-organisasjoner, og som har hovedforretningssted utenfor territoriene der traktatene får anvendelse.<br><br>
-
-                    Slike GH-organisasjoner sender inn en erklæring til vedkommende myndighet i hver medlemsstat der de yter tjenester.
+                <div class="bordered-section">
+                    <div class="statement-title">Notification of Changes
+                        <button type="button" class="help-btn" aria-controls="h-changes" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-changes">
+                        Her forplikter dere dere til å gi beskjed til myndigheten hvis noe av det som står i deklarasjonen, endrer seg.
+                        Det kan for eksempel gjelde organisasjonen, styringssystemet eller driften.
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">The ground handling organisation will notify the competent authority of any changes to its organisation, the components of its management system, and its operation as declared herein and as detailed in point ORGH.DEC.100 of Annex I to Delegated Regulation (EU) 2025/20.</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 2: Gjensidig utelukkende valg</div>
-                <div>Brukeren skal kun ha mulighet til å velge én av disse tre organisasjonstypene av gangen. Valgene utelukker hverandre gjensidig, og de inaktive valgene skal gråes ut og feltene låses.</div>
+            <div style="border: 1px solid black; border-top: none; margin-bottom: 20px;">
+                <div class="bordered-section">
+                    <div class="statement-title">Arrangements with the aerodrome operator(s)
+                        <button type="button" class="help-btn" aria-controls="h-arrangements" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="4"></button></div>
+                    <div class="help-text" id="h-arrangements">
+                        <p>Før dere begynner på en flyplass, må dere ha gjort avtaler med flyplassoperatøren. Avtalene skal dekke:</p>
+                        <ul style="list-style: none; padding-left: 4px;">
+                            <li>a) hvilke bakketjenester dere skal yte på flyplassen</li>
+                            <li>b) når dere starter opp på flyplassen</li>
+                            <li>c) hvordan dere og flyplassoperatøren deler drifts- og sikkerhetsinformasjon, blant annet hvordan sikkerhetshendelser rapporteres og analyseres</li>
+                            <li>d) at dere deltar i flyplassens sikkerhetsutvalg (safety committee)</li>
+                        </ul>
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">
+                            The ground handling organisation confirms that all the necessary arrangements with the aerodrome operator(s) have been duly made in advance of starting operation.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bordered-section">
+                    <div class="statement-title">Correctness of Information
+                        <button type="button" class="help-btn" aria-controls="h-correct" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                    <div class="help-text" id="h-correct">
+                        Her bekrefter dere at alle opplysningene i deklarasjonen, også i alle vedleggene (Annex), er riktige.
+                    </div>
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox">
+                        <div class="statement-text">The ground handling organisation confirms that the information disclosed in this declaration, including all Annexes, is correct.</div>
+                    </div>
+                </div>
+
+                <div class="bordered-section">
+                    <div class="statement-title">Consent to publish contact details
+                        <button type="button" class="help-btn" aria-controls="h-consent" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="5"></button></div>
+                    <div class="help-text" id="h-consent">
+                        <p>Svarer dere «Yes», gir dere tillatelse til at kontaktopplysningene i deklarasjonen kan publiseres på nettsidene til
+                        den nasjonale luftfartsmyndigheten (i Norge: Luftfartstilsynet), EASA eller begge.</p>
+                        <p>Svarer dere «No», blir kontaktopplysningene ikke publisert.</p>
+                    </div>
+                    <div class="statement-text" style="margin-bottom: 10px;">
+                        The ground handling organisation consents to the publication of its contact details provided in this declaration, either on the website of its national competent authority or on that of EASA, or on both, once the declaration has been received by the competent authority concerned.
+                    </div>
+                    <div style="display: flex; gap: 30px; margin-left: 20px; font-weight: bold;">
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="radio" name="consent_pub" value="yes" required> Yes
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="radio" name="consent_pub" value="no" required> No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bordered-section">
+                    <div style="display: flex; gap: 20px; margin-bottom: 10px;">
+                        <div style="flex: 0 0 160px;">
+                            <label>Date:</label>
+                            <input type="date">
+                        </div>
+                        <div style="flex: 1;">
+                            <label>Name of Accountable Manager:</label>
+                            <input type="text" placeholder="Type Full Name here">
+                        </div>
+                    </div>
+
+                    <label for="signature-box">Signature of Accountable Manager:
+                        <button type="button" class="help-btn" aria-controls="h-signature" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="6"></button></label>
+                    <div class="help-text" id="h-signature">
+                        Deklarasjonen skal signeres av ansvarlig leder (accountable manager). Signeringen skjer elektronisk når dere logger inn og sender inn skjemaet.
+                        Dere trenger ikke å signere på noen annen måte.
+                    </div>
+                    <div class="signature-wrapper">
+                        <div class="altinn-auth-text">Autentisering via sikker innlogging</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 3: Oppslag av ICAO-koder</div>
-                <div>Når brukeren taster inn en 4-bokstavs ICAO-kode (f.eks. ENBO), er det ønskelig at denne slås opp i et bakenforliggende register, slik at feltene for lufthavnens navn ("Aerodrome name") og land ("State") fylles ut automatisk for å forhindre skrivefeil og sikre datakvalitet.</div>
+            <div class="page-break"></div>
+
+            <div style="text-align: center; font-weight: bold; margin-bottom: 10px; font-style: italic; padding: 15px; border: 1px solid #000;">
+                Annex to the Declaration (*)
+                <button type="button" class="help-btn" aria-controls="h-annex" aria-expanded="false" aria-label="Hjelp">?</button>
+                <button type="button" class="dev-marker" data-note="7"></button>
+                <div class="help-text" id="h-annex">
+                    <p>Dere må fylle ut ett vedlegg for hver flyplass dere har ført opp i listen over flyplasser.</p>
+                    <p>Skriv vedleggsnummeret (1, 2, 3 …) og flyplassens ICAO-kode. Navnet på flyplassen fylles da ut automatisk.</p>
+                </div>
             </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 4: Utdypende informasjon (Arrangements)</div>
-                <div>Det er behov for å gjøre underpunktene tilknyttet denne avkrysningen tilgjengelig for brukeren i form av veiledningsinformasjon (f.eks. som en utvidbar tekst, fotnote eller et hjelpeikon). Teksten som skal gjøres tilgjengelig er:<br><br>
-                a) the type of ground handling services intended to be provided at that aerodrome;<br>
-                b) the date of starting the operation at the aerodrome;<br>
-                c) methods of exchanging operational and relevant safety information with the aerodrome operator including the reporting and analysis of relevant safety occurrences; and<br>
-                d) participation in the aerodrome safety committees.</div>
+            <div style="font-size: 0.9em; margin-bottom: 20px;">
+                (*) To be filled individually for each aerodrome where the organisation provides ground handling services under this declaration.
             </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 5: Veiledning (Consent to publish)</div>
-                <div>Det skal legges til en veiledende hjelpetekst for disse valgene som forklarer konsekvensen. Teksten som skal vises er: <em>"Ved å velge 'Yes', samtykker du til at EASA og/eller de nasjonale luftfartsmyndighetene publiserer kontaktinformasjonen på sine hjemmesider."</em></div>
+            <div style="border: 1px solid black;">
+                <div class="bordered-section lookup-row">
+                    <strong>Annex No <input type="text" style="width: 50px; display: inline;"> to the Declaration for</strong>
+                    <div style="display: flex; gap: 10px; margin-top: 5px; align-items: center;">
+                        <input type="text" class="field-icao" placeholder="ICAO (2)" style="width: 80px; text-transform: uppercase;" maxlength="4">
+                        <input type="text" class="field-name" placeholder="Aerodrome Name (1)" style="flex-grow: 1;">
+                        <input type="hidden" class="field-state">
+                    </div>
+                </div>
+
+                <div class="bordered-section">
+                    <strong>(1) Name, email and telephone number of the representative of the ground handling organisation at the aerodrome referred to in this Annex:</strong>
+                    <button type="button" class="help-btn" aria-controls="h-rep" aria-expanded="false" aria-label="Hjelp">?</button>
+                    <div class="help-text" id="h-rep">
+                        Personen som representerer organisasjonen deres på denne flyplassen, og som flyplassoperatøren og myndigheten kan kontakte.
+                        Skriv navn, e-postadresse og telefonnummer.
+                    </div>
+                    <input type="text" style="margin-top: 10px;">
+                </div>
+
+                <div class="bordered-section">
+                    <strong>(2) Name, email and telephone number of the person responsible for the safety management at the aerodrome referred to in this Annex (*):</strong>
+                    <button type="button" class="help-btn" aria-controls="h-safman" aria-expanded="false" aria-label="Hjelp">?</button>
+                    <div class="help-text" id="h-safman">
+                        <p>Personen som har ansvaret for sikkerhetsstyringen på denne flyplassen. Skriv navn, e-postadresse og telefonnummer.</p>
+                        <p>Det kan være samme person som i punkt (1), og den samme personen kan ha ansvaret for flere flyplasser.</p>
+                    </div>
+                    <input type="text" style="margin-top: 10px;">
+                    <div style="font-size: 0.8em; font-style: italic; margin-top: 5px;">
+                        Note: The same person may cumulate the responsibilities referred to in points (1) and (2) and may be responsible for more than one aerodrome.
+                    </div>
+                </div>
+
+                <div class="bordered-section">
+                    <strong>Starting date of operation at this aerodrome (*):</strong>
+                    <button type="button" class="help-btn" aria-controls="h-astart" aria-expanded="false" aria-label="Hjelp">?</button>
+                    <div class="help-text" id="h-astart">
+                        <p>Skriv datoen dere starter med bakketjenester på denne flyplassen.</p>
+                        <p>Yter dere allerede tjenester på flyplassen den dagen forordningen begynner å gjelde? Da skriver dere datoen dere sender inn denne deklarasjonen.</p>
+                    </div>
+                    <input type="date" style="margin-top: 10px;">
+                    <div style="font-size: 0.8em; margin-top: 10px;">
+                        (*) If the organisation already provides services at this aerodrome at the date when this Regulation becomes applicable, this date shall indicate the date when the declaration is submitted.
+                    </div>
+                </div>
             </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 6: Autentisering / Signatur</div>
-                <div>Dette feltet er kun en visuell indikator i skjemaet som viser at erklæringen krever signatur. Den faktiske, juridiske signeringen av "Accountable Manager" skal håndteres gjennom plattformens standardmekanismer for innlogging og autentisering i forbindelse med selve innsendingen av skjemaet.</div>
+            <div style="margin-top: 20px; font-weight: bold;">
+                List of ground handling services provided at the aerodrome covered by this Annex to the Declaration, pursuant to <a href="https://www.easa.europa.eu/en/regulations/ground-handling" target="_blank">Article 2(2) of Delegated Regulation (EU) 2025/20</a>
+                <button type="button" class="help-btn" aria-controls="h-services" aria-expanded="false" aria-label="Hjelp">?</button>
+                <div class="help-text" id="h-services">
+                    <p>Kryss av for alle bakketjenestene dere yter på denne flyplassen.</p>
+                    <p>Der det står «please specify», beskriver dere kort hva tjenesten omfatter (for eksempel «innsjekking og ombordstigning» under passasjerhåndtering).</p>
+                    <p>For avising (de-icing/anti-icing) skriver dere også om dere har ansvar for å føre tilsyn med avisingen.</p>
+                    <p>Under «Dangerous goods» krysser dere av hvis personellet deres håndterer farlig gods i forbindelse med de tjenestene som står oppført.</p>
+                </div>
             </div>
 
-            <div class="dev-note-card">
-                <div class="dev-note-title">Notat 7: Repeterende Annex-seksjon</div>
-                <div>Det må være mulig for brukeren å legge til flere lufthavner. Hele "Annex"-seksjonen må kunne dupliseres/repeteres for hver nye lufthavn aktøren legger inn, slik at de kan knytte spesifikke tjenester til hver enkelt stasjon de opererer på.</div>
-            </div>
-        </div>
+            <table style="width: 100%; margin-top: 10px;">
+                <tr>
+                    <td>Passenger handling (Article 2(2), point (a)) — please specify:<br><input type="text"></td>
+                    <td width="5%" align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Handling of passengers with reduced mobility (Article 2(2), point (a))</td>
+                    <td width="5%" align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Baggage handling (Article 2(2), point (b)) — please specify:<br><input type="text"></td>
+                    <td width="5%" align="center"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Aircraft servicing</td>
+                </tr>
+
+                <tr>
+                    <td>Operation of GSE used for ground handling services (Article 2(2), point (c)(i))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Aircraft refuelling and defuelling – into-plane fuelling services (Article 2(2), point (c)(ii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Aircraft toilet servicing (Article 2(2), point (c)(iii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Aircraft potable water servicing (Article 2(2), point (c)(iv))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Aircraft exterior cleaning (Article 2(2), point (c)(v))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>
+                        Aircraft de-icing/anti-icing (Article 2(2), point (c)(vi)); also specify if supervision of de-icing/anti-icing is provided:<br>
+                        <input type="text">
+                    </td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Turnaround activities</td>
+                </tr>
+
+                <tr>
+                    <td>Aircraft arrival activities (Article 2(2), point (d)(i))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Aircraft loading/unloading (Article 2(2), point (d)(ii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Loading supervision (Article 2(2), point (d)(ii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Aircraft departure activities (Article 2(2), point (d)(iii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>
+                        Aircraft towing/pushback (Article 2(2), point (d)(iv)):
+                        <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <div><label><input type="checkbox"> Towing / Pushback</label></div>
+                            <div><label><input type="checkbox"> Vehicle operation</label></div>
+                            <div><label><input type="checkbox"> Headset communication</label></div>
+                            <div><label><input type="checkbox"> Wing-person guidance</label></div>
+                        </div>
+                    </td>
+                    <td align="center" style="vertical-align: top;"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Cargo and mail handling</td>
+                </tr>
+                <tr>
+                    <td>Cargo acceptance on behalf of the aircraft operator (Article 2(2), point (e)(i))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Final build-up and storage (Article 2(2), point (e)(ii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Final weighing and tagging of ULD (Article 2(2), point (e)(iii))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Final checks before air transportation (Article 2(2), point (e)(iv))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Ground transportation of cargo/mail between the point of final checks and the aircraft (Article 2(2), point (e)(v))</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="background-color: transparent; border: none; padding-top: 15px; font-weight: bold;">Dangerous goods</td>
+                </tr>
+                <tr>
+                    <td>Passenger handling</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Baggage handling</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Dangerous goods acceptance as cargo</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>Dangerous goods handling as cargo</td>
+                    <td align="center"><input type="checkbox"></td>
+                </tr>
+            </table>
+
+        </form>
+
+        <!-- Utskriftsvedlegg med alle notater (vises kun ved "Skriv ut med notater") -->
+        <div id="notesAppendix"></div>
     </div>
 
+    <!-- ================= NOTAT-DIALOGER ================= -->
+    <dialog class="note-dialog" id="noteDialog">
+        <header>
+            <div><span class="note-num" id="noteNum"></span><h2 id="noteTitle"></h2></div>
+            <button type="button" class="close-btn" aria-label="Lukk">×</button>
+        </header>
+        <div class="note-body" id="noteBody"></div>
+    </dialog>
+
+    <dialog class="note-dialog" id="allNotesDialog">
+        <header>
+            <h2>Alle utviklernotater</h2>
+            <button type="button" class="close-btn" aria-label="Lukk">×</button>
+        </header>
+        <div class="note-body" id="allNotesBody"></div>
+    </dialog>
+
     <script>
+        // =====================================================================
+        // UTVIKLERNOTATER (vises i dialog når man klikker på "Notat X")
+        // =====================================================================
+        const NOTES = {
+            1: {
+                title: 'Veiledning (Principal place of business)',
+                html: `
+                    <p>Søkeren trenger veiledning for å fylle ut dette feltet riktig. Veiledningen vises via hjelpetekst-knappen (<strong>?</strong>) ved feltet.</p>
+                    <p>Hjelpeteksten er en forenklet versjon på klarspråk av veiledningen til ORGH.GEN.105. Den forklarer
+                    (1) hvordan søkeren finner organisasjonens hovedforretningssted, og (2) hvorfor dette er viktig, det vil si hvilken myndighet deklarasjonen hører til.
+                    Teksten skal brukes slik den står.</p>
+                    <details>
+                        <summary>Kildetekst (fullstendig veiledning – kun til referanse)</summary>
+                        <p><strong>GH-ORGANISASJONERS HOVEDFORRETNINGSSTED</strong></p>
+                        <p>a) For GH-organisasjoner som yter tjenester i mer enn én medlemsstat, og GH-organisasjoner som inngår i én enkelt foretaksgruppering av GH-organisasjoner, og som har hovedforretningssted på et territorium der traktatene får anvendelse, anses vedkommende myndighet i medlemsstaten der hovedforretningsstedet ligger, som kontaktpunkt for all informasjon knyttet til deres erklæringer og GH-virksomhet ved alle flyplasser i EU som omfattes av <a href="https://eur-lex.europa.eu/eli/reg_del/2025/20/oj" target="_blank">delegert kommisjonsforordning (EU) 2025/20</a>.</p>
+                        <p>b) Følgende kriterier brukes for å fastslå en organisasjons hovedforretningssted:</p>
+                        <p>1) Alle finansielle operasjoner og beslutninger som berører organisasjonen som helhet, herunder de operative aspektene, og som gjør organisasjonen i stand til ikke bare å motta midler og overskudd og gi avkastning til aksjeeierne, men også til å oppfylle sine forpliktelser og foreta forfalte betalinger. Disse forpliktelsene og betalingene spenner fra kostnader knyttet til personell og fasiliteter til kostnader knyttet til oppfyllelse av kontraktsmessige, skattemessige eller andre finansielle forpliktelser, samt utbetaling av utbytte, lønn og ansattgoder og investeringsbeslutninger. Disse økonomistyringsfunksjonene krever planlegging og forvaltning av organisasjonens midler, noe som ikke kunstig kan skilles fra organisasjonens drift. Funksjonene er derfor vesentlige for å drive en virksomhet, og er en sterk indikator på hvor hovedkontoret ligger og hvor ledelsen utøves, og på hvilket rettssystem organisasjonen har nærmest tilknytning til.</p>
+                        <p>2) Den overordnede kontrollen med organisasjonens operative virksomhet innebærer å styre organisasjonens operative beslutninger på regelmessig basis. Et sted der tjenesteytingen overvåkes og styres fra, indikerer hvor organisasjonen kontrollerer driften fra.</p>
+                        <p>3) Organisasjonens ansvarlige leder (accountable manager) har det endelige ansvaret for sikkerheten. Den ansvarlige lederen har ansvar for å sikre at all virksomhet kan finansieres og utføres i samsvar med gjeldende krav, og at organisasjonen er hensiktsmessig organisert og bemannet med tilstrekkelig kvalifisert personell. Ettersom den ansvarlige lederen har det endelige ansvaret for sikkerhet og etterlevelse overfor vedkommende myndighet, anbefales det at lederen enten er fast bosatt i landet der hovedforretningsstedet ligger, eller godtgjør overfor vedkommende myndighet at det finnes egnede ordninger for å ivareta ansvaret fullt ut uten å være bosatt ved hovedforretningsstedet.</p>
+                        <p>4) Organisasjonens nøkkelpersonell (personer med ansvar for drift, sikkerhet, samsvarskontroll, opplæring osv.) som styrer og koordinerer den daglige operative virksomheten som til syvende og sist fører til at sikkerhetsmålene i EUs regelverk for flysikkerhet nås.</p>
+                        <p>5) Hovedkontoret er stedet der alle beslutninger som påvirker utviklingen av hele selskapets administrasjon, og koordineringen av nødvendige tiltak, treffes daglig eller regelmessig.</p>
+                        <p>6) Dokumentasjonen av de operative og finansielle beslutningene som påvirker ledelsen, kontrollen, planleggingen, koordineringen og finansieringen av organisasjonens virksomhet og drift, innenfor rammen av gjeldende regelverk, er alltid håndgripelig og kan bli gjenstand for fysisk inspeksjon og/eller vurdering fra vedkommende myndighet.</p>
+                        <p>c) Hovedforretningsstedet for luftfartøyoperatører som utfører egenhandling (self-handling), fastsettes i samsvar med <a href="https://eur-lex.europa.eu/eli/reg/2012/965/oj" target="_blank">forordning (EU) nr. 965/2012</a>.</p>
+                        <p><strong>ERKLÆRING FRA GH-ORGANISASJONER MED HOVEDFORRETNINGSSTED UTENFOR TERRITORIENE DER TRAKTATENE FÅR ANVENDELSE</strong></p>
+                        <p>Virkeområdet for punkt <a href="https://www.easa.europa.eu/en/document-library/easy-access-rules/online-publications/easy-access-rules-ground-handling?erules-id=ERULES-1963177438-23731#ERULES-1963177438-23731" target="_blank">ORGH.GEN.105</a> bokstav a) omfatter GH-organisasjoner som yter tjenester i mer enn én medlemsstat, enten som selvstendig organisasjon eller som del av én enkelt foretaksgruppering av GH-organisasjoner, og som har hovedforretningssted utenfor territoriene der traktatene får anvendelse.</p>
+                        <p>Slike GH-organisasjoner sender inn en erklæring til vedkommende myndighet i hver medlemsstat der de yter tjenester.</p>
+                    </details>`
+            },
+            2: {
+                title: 'Gjensidig utelukkende valg',
+                html: `<p>Brukeren skal bare kunne velge én av de tre organisasjonstypene. Valgene utelukker hverandre, og valgene som ikke er aktive, skal gråes ut og låses.</p>`
+            },
+            3: {
+                title: 'Oppslag av ICAO-koder',
+                html: `<p>Når brukeren taster inn en ICAO-kode på fire bokstaver (f.eks. ENBO), bør koden slås opp i et register i bakgrunnen. Da fylles lufthavnens navn («Aerodrome name») og land («State») ut automatisk. Det hindrer skrivefeil og sikrer god datakvalitet.</p>`
+            },
+            4: {
+                title: 'Utdypende informasjon (Arrangements)',
+                html: `<p>Underpunktene som hører til denne avkrysningen, skal være tilgjengelige for brukeren som veiledning. Teksten vises via hjelpetekst-knappen (<strong>?</strong>), oversatt til klarspråk på norsk.</p>
+                    <details>
+                        <summary>Kildetekst (engelsk)</summary>
+                        <p>a) the type of ground handling services intended to be provided at that aerodrome;<br>
+                        b) the date of starting the operation at the aerodrome;<br>
+                        c) methods of exchanging operational and relevant safety information with the aerodrome operator including the reporting and analysis of relevant safety occurrences; and<br>
+                        d) participation in the aerodrome safety committees.</p>
+                    </details>`
+            },
+            5: {
+                title: 'Veiledning (Consent to publish)',
+                html: `<p>Valgene skal ha en hjelpetekst som forklarer hva det betyr å svare «Yes» og «No». Teksten vises via hjelpetekst-knappen (<strong>?</strong>).</p>`
+            },
+            6: {
+                title: 'Autentisering / Signatur',
+                html: `<p>Dette feltet viser bare at erklæringen må signeres. Den faktiske, juridiske signeringen av «Accountable Manager» skal skje gjennom plattformens vanlige innlogging og autentisering når skjemaet sendes inn.</p>`
+            },
+            7: {
+                title: 'Repeterende Annex-seksjon',
+                html: `<p>Brukeren må kunne legge til flere lufthavner. Hele «Annex»-seksjonen må kunne dupliseres for hver ny lufthavn aktøren legger inn, slik at aktøren kan knytte bestemte tjenester til hver enkelt stasjon de opererer på.</p>`
+            }
+        };
+
+        // Sett tekst på markørene
+        document.querySelectorAll('.dev-marker[data-note]').forEach(m => {
+            m.textContent = 'Notat ' + m.dataset.note;
+            m.title = NOTES[m.dataset.note].title;
+        });
+
+        const noteDialog = document.getElementById('noteDialog');
+        const allNotesDialog = document.getElementById('allNotesDialog');
+
+        function allNotesHtml() {
+            return Object.keys(NOTES).map(k => `
+                <div class="all-notes-item">
+                    <span class="note-num">Notat ${k}</span>
+                    <h3>${NOTES[k].title}</h3>${NOTES[k].html}
+                </div>`).join('');
+        }
+
+        document.addEventListener('click', e => {
+            // Utviklernotat
+            const marker = e.target.closest('.dev-marker[data-note]');
+            if (marker) {
+                e.preventDefault();
+                const n = NOTES[marker.dataset.note];
+                document.getElementById('noteNum').textContent = 'Notat ' + marker.dataset.note;
+                document.getElementById('noteTitle').textContent = n.title;
+                document.getElementById('noteBody').innerHTML = n.html;
+                noteDialog.showModal();
+                return;
+            }
+            // Hjelpetekst
+            const help = e.target.closest('button.help-btn');
+            if (help) {
+                e.preventDefault();
+                const box = document.getElementById(help.getAttribute('aria-controls'));
+                const open = box.classList.toggle('open');
+                help.setAttribute('aria-expanded', open);
+            }
+        });
+
+        document.getElementById('showAllNotes').addEventListener('click', () => {
+            document.getElementById('allNotesBody').innerHTML = allNotesHtml();
+            allNotesDialog.showModal();
+        });
+
+        document.querySelectorAll('dialog').forEach(d => {
+            d.querySelector('.close-btn').addEventListener('click', () => d.close());
+            d.addEventListener('click', e => { if (e.target === d) d.close(); });
+        });
+
+        document.getElementById('toggleDev').addEventListener('click', function () {
+            const hidden = document.body.classList.toggle('hide-dev');
+            this.textContent = hidden ? 'Vis utviklernotater' : 'Skjul utviklernotater (sluttbrukervisning)';
+        });
+
+        document.getElementById('printWithNotes').addEventListener('click', () => {
+            document.getElementById('notesAppendix').innerHTML = '<h2>Utviklernotater</h2>' + allNotesHtml();
+            document.body.classList.add('print-notes');
+            window.print();
+            document.body.classList.remove('print-notes');
+        });
+
         // --- Organisasjonstype Logikk (Notat 2) ---
         const orgRadios = document.querySelectorAll('input[name="orgType"]');
         const orgRows = document.querySelectorAll('.org-type-row');
@@ -739,7 +1054,7 @@
                 orgRows.forEach(row => {
                     const rowRadio = row.querySelector('input[type="radio"]');
                     const textInputs = row.querySelectorAll('input[type="text"]');
-                    
+
                     if (rowRadio.checked) {
                         row.style.opacity = '1';
                         textInputs.forEach(input => input.disabled = false);
@@ -806,7 +1121,7 @@
             "ENNO": { name: "Notodden Airport, Tuven", state: "Norway" },
             "ENRS": { name: "Røst Airport", state: "Norway" },
             "ENVR": { name: "Værøy Heliport", state: "Norway" },
-            
+
             // --- EUROPEAN MAJOR HUBS ---
             "EDDK": { name: "Cologne Bonn Airport", state: "Germany" },
             "EDDF": { name: "Frankfurt Airport", state: "Germany" },
