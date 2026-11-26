@@ -172,6 +172,18 @@
         .help-text p { margin: 0 0 6px; }
         .help-text p:last-child, .help-text ul:last-child, .help-text ol:last-child { margin-bottom: 0; }
 
+        /* Informasjonsboks (alltid synlig, ikke en del av erklæringsteksten) */
+        .info-box {
+            background: #f5f5f5;
+            border: 1px solid #ccc;
+            border-left: 3px solid #757575;
+            padding: 8px 12px;
+            margin: 10px 0 0 25px;
+            font-size: 12px;
+        }
+        .info-box p { margin: 0 0 4px; }
+        .info-box ul { list-style: none; margin: 0; padding-left: 4px; }
+
         /* Myk varsling (f.eks. 10 virkedager-fristen) */
         .soft-warning {
             display: none;
@@ -988,16 +1000,28 @@
                     <div class="checkbox-row" style="margin-bottom: 0;">
                         <input type="checkbox">
                         <div class="statement-text">
-                            <div data-lang="no">Bakketjenesteorganisasjonen bekrefter at alle nødvendige avtaler med flyplassoperatøren(e) er inngått på forhånd, før driften starter, blant annet om:<br>
-                                a) hvilke typer bakketjenester som skal ytes på flyplassen,<br>
-                                b) dato for oppstart av driften på flyplassen,<br>
-                                c) metoder for utveksling av driftsinformasjon og relevant sikkerhetsinformasjon med flyplassoperatøren, herunder rapportering og analyse av relevante sikkerhetshendelser, og<br>
-                                d) deltakelse i flyplassens sikkerhetsutvalg.</div>
-                            <div data-lang="en">The ground handling organisation confirms that all the necessary arrangements with the aerodrome operator(s) have been duly made in advance of starting operation, such as but not limited to:<br>
-                                (a) the type of ground handling services intended to be provided at that aerodrome;<br>
-                                (b) the date of starting the operation at the aerodrome;<br>
-                                (c) methods of exchanging operational and relevant safety information with the aerodrome operator including the reporting and analysis of relevant safety occurrences; and<br>
-                                (d) participation in the aerodrome safety committees.</div>
+                            <div data-lang="no">Bakketjenesteorganisasjonen bekrefter at alle nødvendige avtaler med flyplassoperatøren(e) er inngått på forhånd, før driften starter.</div>
+                            <div data-lang="en">The ground handling organisation confirms that all the necessary arrangements with the aerodrome operator(s) have been duly made in advance of starting operation.</div>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <div data-lang="no">
+                            <p>Avtalene omfatter blant annet:</p>
+                            <ul>
+                                <li>a) hvilke typer bakketjenester som skal ytes på flyplassen,</li>
+                                <li>b) dato for oppstart av driften på flyplassen,</li>
+                                <li>c) metoder for utveksling av driftsinformasjon og relevant sikkerhetsinformasjon med flyplassoperatøren, herunder rapportering og analyse av relevante sikkerhetshendelser, og</li>
+                                <li>d) deltakelse i flyplassens sikkerhetsutvalg.</li>
+                            </ul>
+                        </div>
+                        <div data-lang="en">
+                            <p>The arrangements include, but are not limited to:</p>
+                            <ul>
+                                <li>(a) the type of ground handling services intended to be provided at that aerodrome;</li>
+                                <li>(b) the date of starting the operation at the aerodrome;</li>
+                                <li>(c) methods of exchanging operational and relevant safety information with the aerodrome operator including the reporting and analysis of relevant safety occurrences; and</li>
+                                <li>(d) participation in the aerodrome safety committees.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -1493,7 +1517,12 @@
             },
             8: {
                 title: 'Utdypende informasjon (Arrangements)',
-                html: `<p>Underpunktene a)–d) står i selve erklæringsteksten, slik de gjør i forordningen («such as but not limited to»). I tillegg forklarer hjelpetekst-knappen (<strong>?</strong>) punktene på klarspråk, på norsk eller engelsk etter valgt språk.</p>
+                html: `<p><strong>Spesifikt krav fra EASA:</strong> Bare avkrysningsboksen og bekreftelsesteksten skal være en del av erklæringen. Underpunktene a)–d) skal <em>ikke</em> stå i selve erklæringsteksten, men vises som en egen informasjonsboks under avkrysningsboksen. Dette avviker fra Appendix 1 i forordningen, der punktene står i erklæringsteksten («such as but not limited to»).</p>
+                    <ul>
+                        <li>Informasjonsboksen er alltid synlig. Den er ikke en hjelpetekst som må åpnes, og den er ikke noe brukeren svarer på.</li>
+                        <li>I Altinn kan boksen lages som en informasjonskomponent (f.eks. Paragraph eller Panel av typen «info») med tekstressurs på begge språk.</li>
+                        <li>Hjelpetekst-knappen (<strong>?</strong>) forklarer i tillegg punktene på klarspråk, på norsk eller engelsk etter valgt språk.</li>
+                    </ul>
                     <details>
                         <summary>Kildetekst (engelsk)</summary>
                         <p>a) the type of ground handling services intended to be provided at that aerodrome;<br>
