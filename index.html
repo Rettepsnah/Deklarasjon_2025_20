@@ -172,18 +172,6 @@
         .help-text p { margin: 0 0 6px; }
         .help-text p:last-child, .help-text ul:last-child, .help-text ol:last-child { margin-bottom: 0; }
 
-        /* Informasjonsboks (alltid synlig, ikke en del av erklæringsteksten) */
-        .info-box {
-            background: #f5f5f5;
-            border: 1px solid #ccc;
-            border-left: 3px solid #757575;
-            padding: 8px 12px;
-            margin: 10px 0 0 25px;
-            font-size: 12px;
-        }
-        .info-box p { margin: 0 0 4px; }
-        .info-box ul { list-style: none; margin: 0; padding-left: 4px; }
-
         /* Myk varsling (f.eks. 10 virkedager-fristen) */
         .soft-warning {
             display: none;
@@ -1004,26 +992,6 @@
                             <div data-lang="en">The ground handling organisation confirms that all the necessary arrangements with the aerodrome operator(s) have been duly made in advance of starting operation.</div>
                         </div>
                     </div>
-                    <div class="info-box">
-                        <div data-lang="no">
-                            <p>Avtalene omfatter blant annet:</p>
-                            <ul>
-                                <li>a) hvilke typer bakketjenester som skal ytes på flyplassen,</li>
-                                <li>b) dato for oppstart av driften på flyplassen,</li>
-                                <li>c) metoder for utveksling av driftsinformasjon og relevant sikkerhetsinformasjon med flyplassoperatøren, herunder rapportering og analyse av relevante sikkerhetshendelser, og</li>
-                                <li>d) deltakelse i flyplassens sikkerhetsutvalg.</li>
-                            </ul>
-                        </div>
-                        <div data-lang="en">
-                            <p>The arrangements include, but are not limited to:</p>
-                            <ul>
-                                <li>(a) the type of ground handling services intended to be provided at that aerodrome;</li>
-                                <li>(b) the date of starting the operation at the aerodrome;</li>
-                                <li>(c) methods of exchanging operational and relevant safety information with the aerodrome operator including the reporting and analysis of relevant safety occurrences; and</li>
-                                <li>(d) participation in the aerodrome safety committees.</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="bordered-section">
@@ -1517,11 +1485,10 @@
             },
             8: {
                 title: 'Utdypende informasjon (Arrangements)',
-                html: `<p><strong>Spesifikt krav fra EASA:</strong> Bare avkrysningsboksen og bekreftelsesteksten skal være en del av erklæringen. Underpunktene a)–d) skal <em>ikke</em> stå i selve erklæringsteksten, men vises som en egen informasjonsboks under avkrysningsboksen. Dette avviker fra Appendix 1 i forordningen, der punktene står i erklæringsteksten («such as but not limited to»).</p>
+                html: `<p><strong>Spesifikt krav fra EASA:</strong> Bare avkrysningsboksen og bekreftelsesteksten skal være synlige i skjemaet. Underpunktene a)–d) skal <em>ikke</em> stå i selve erklæringsteksten. De vises i stedet i informasjonsboksen som åpnes med hjelpetekst-knappen (<strong>?</strong>). Dette avviker fra Appendix 1 i forordningen, der punktene står i erklæringsteksten («such as but not limited to»).</p>
                     <ul>
-                        <li>Informasjonsboksen er alltid synlig. Den er ikke en hjelpetekst som må åpnes, og den er ikke noe brukeren svarer på.</li>
-                        <li>I Altinn kan boksen lages som en informasjonskomponent (f.eks. Paragraph eller Panel av typen «info») med tekstressurs på begge språk.</li>
-                        <li>Hjelpetekst-knappen (<strong>?</strong>) forklarer i tillegg punktene på klarspråk, på norsk eller engelsk etter valgt språk.</li>
+                        <li>Informasjonsboksen forklarer punktene på klarspråk, på norsk eller engelsk etter valgt språk.</li>
+                        <li>Punktene er ikke noe brukeren svarer på. Brukeren bekrefter bare avkrysningsboksen.</li>
                     </ul>
                     <details>
                         <summary>Kildetekst (engelsk)</summary>
