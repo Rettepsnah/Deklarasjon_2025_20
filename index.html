@@ -273,6 +273,24 @@
         }
 
         .indent { margin-left: 25px; }
+        .annex-no { display: inline-block; min-width: 20px; text-align: center; }
+
+        /* Obligatorisk tekstfelt ved valgt organisasjonstype (Notat 7) */
+        .required-hint {
+            display: none;
+            font-size: 11px;
+            color: #a4161a;
+            margin-top: 3px;
+        }
+        .org-type-row.selected .required-hint { display: block; }
+        input.missing, textarea.missing { border-bottom: 1px solid #a4161a !important; background-color: #fdf0f0; }
+        textarea.missing { border-color: #a4161a !important; }
+
+        /* Felt som åpnes når en avkrysningsboks krysses av (Notat 10) */
+        .conditional-field { display: none; margin-left: 30px; margin-top: 8px; }
+        .conditional-field.open { display: block; }
+        .conditional-field .required-hint { display: block; }
+        td .conditional-field { margin-left: 0; margin-top: 4px; }
 
         /* --- Avvikling (ORGH.DEC.105) --- */
         .termination-box {
@@ -398,7 +416,7 @@
 
         @media print {
             body { background-color: white; margin: 0; padding: 0; display: block; }
-            .dev-toolbar, .dev-marker, .dev-top-note, .help-btn, .help-text, .lang-switch, .soft-warning, .form-btn { display: none !important; }
+            .dev-toolbar, .dev-marker, .dev-top-note, .help-btn, .help-text, .lang-switch, .soft-warning, .form-btn, .required-hint { display: none !important; }
             .container { width: 100%; max-width: none; box-shadow: none; padding: 0; margin: 0; }
             .page-break { page-break-before: always; border-top: none; margin-top: 0; padding-top: 20px; }
             .valid-code, .invalid-code, .unknown-code { background-color: transparent !important; }
@@ -814,13 +832,15 @@
 
                     <div class="checkbox-row org-type-row">
                         <input type="radio" name="orgType" value="integrated_aerodrome">
-                        <span><span data-lang="no">en integrert del av en lufthavnoperatør</span><span data-lang="en">integrated part of an aerodrome operator</span> <input type="text" style="width: 50%; display: inline;"></span>
+                        <span><span data-lang="no">en integrert del av en lufthavnoperatør</span><span data-lang="en">integrated part of an aerodrome operator</span> <input type="text" style="width: 50%; display: inline;" aria-describedby="req-aerodrome">
+                            <span class="required-hint" id="req-aerodrome"><span data-lang="no">Obligatorisk: Skriv navnet på lufthavnoperatøren.</span><span data-lang="en">Required: Enter the name of the aerodrome operator.</span></span></span>
                     </div>
 
                     <div class="checkbox-row org-type-row" style="flex-wrap: wrap;">
                         <input type="radio" name="orgType" value="integrated_carrier">
                         <span><span data-lang="no">en integrert del av en luftfartøyoperatør eller av ett enkelt konsern av luftfartsselskaper</span><span data-lang="en">integrated part of an aircraft operator or of a single air carrier business grouping</span></span>
-                        <input type="text" class="indent" style="width: 95%;">
+                        <input type="text" class="indent" style="width: 95%;" aria-describedby="req-carrier">
+                        <span class="required-hint indent" id="req-carrier" style="width: 95%;"><span data-lang="no">Obligatorisk: Skriv navnet på luftfartøyoperatøren eller konsernet.</span><span data-lang="en">Required: Enter the name of the aircraft operator or group.</span></span>
                     </div>
                 </div>
 
@@ -955,7 +975,8 @@
 
                 <div class="bordered-section">
                     <div class="statement-title"><span data-lang="no">Alternative samsvarsmetoder (AltMoC)</span><span data-lang="en">Alternative means of compliance (AltMoC)</span>
-                        <button type="button" class="help-btn" aria-controls="h-altmoc" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                        <button type="button" class="help-btn" aria-controls="h-altmoc" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="10"></button></div>
                     <div class="help-text" id="h-altmoc">
                         <div data-lang="no">
                             <p><strong>Kryss bare av hvis dette gjelder dere.</strong></p>
@@ -963,6 +984,7 @@
                             Hvis dere oppfyller kravene på en annen måte enn det AMC beskriver, kalles det alternative samsvarsmetoder (AltMoC).</p>
                             <p>Kryss av for å bekrefte at dere har sendt de alternative samsvarsmetodene til myndigheten, med henvisning til hvilken AMC de erstatter.
                             Bruker dere ikke alternative samsvarsmetoder, lar dere feltet stå tomt.</p>
+                            <p>Når dere krysser av, åpnes et tekstfelt. Der skriver dere hvilke alternative samsvarsmetoder dere bruker, og hvilken AMC hver av dem erstatter. Feltet er obligatorisk.</p>
                         </div>
                         <div data-lang="en">
                             <p><strong>Only tick this box if it applies to you.</strong></p>
@@ -970,14 +992,20 @@
                             If you meet the requirements in a different way from what the AMC describe, these are called Alternative Means of Compliance (AltMoC).</p>
                             <p>Tick the box to confirm that you have sent your AltMoC to the authority, with a reference to the AMC they replace.
                             If you do not use any AltMoC, leave the box blank.</p>
+                            <p>When you tick the box, a text field opens. Enter which AltMoC you use and which AMC each of them replaces. This field is required.</p>
                         </div>
                     </div>
                     <div class="checkbox-row" style="margin-bottom: 0;">
-                        <input type="checkbox">
+                        <input type="checkbox" id="f-altmoc" aria-controls="altmoc-ref">
                         <div class="statement-text">
                             <span data-lang="no">(Hvis relevant)<br>De alternative samsvarsmetodene, med henvisning til de tilhørende akseptable samsvarsmetodene (AMC) de erstatter, er sendt til vedkommende myndighet.</span>
                             <span data-lang="en">(If applicable)<br>The AltMoC with references to the associated AMC they replace have been submitted to the competent authority.</span>
                         </div>
+                    </div>
+                    <div class="conditional-field" id="altmoc-ref">
+                        <label for="f-altmoc-ref"><span data-lang="no">Henvisning til de alternative samsvarsmetodene og AMC-ene de erstatter:</span><span data-lang="en">Reference to the AltMoC and the AMC they replace:</span></label>
+                        <textarea id="f-altmoc-ref" rows="2" style="border: 1px solid #ccc; width: 100%;" aria-describedby="req-altmoc"></textarea>
+                        <span class="required-hint" id="req-altmoc"><span data-lang="no">Obligatorisk: Oppgi hvilke alternative samsvarsmetoder dere bruker, og hvilken AMC hver av dem erstatter.</span><span data-lang="en">Required: State which AltMoC you use and which AMC each of them replaces.</span></span>
                     </div>
                 </div>
 
@@ -1002,11 +1030,11 @@
                         <button type="button" class="help-btn" aria-controls="h-gse" aria-expanded="false" aria-label="Hjelp">?</button></div>
                     <div class="help-text" id="h-gse">
                         <div data-lang="no">
-                            <p>GSE (ground support equipment) er bakkeutstyr som brukes til å betjene luftfartøy, for eksempel trapper, lastebånd, lastere og tauekjøretøy.</p>
+                            <p>GSE (ground support equipment) er bakkeutstyr som brukes til å betjene luftfartøy, for eksempel trapper, lastebånd og tauekjøretøy.</p>
                             <p>Her bekrefter dere at alt bakkeutstyr dere bruker, er vedlikeholdt slik vedlikeholdsprogrammet krever.</p>
                         </div>
                         <div data-lang="en">
-                            <p>GSE (ground support equipment) is equipment used to service aircraft on the ground, for example stairs, belt loaders, cargo loaders and tow tractors.</p>
+                            <p>GSE (ground support equipment) is equipment used to service aircraft on the ground, for example stairs, belt loaders and tow tractors.</p>
                             <p>Here you confirm that all the GSE you use is maintained as required by your maintenance programme.</p>
                         </div>
                     </div>
@@ -1057,29 +1085,31 @@
 
                 <div class="bordered-section">
                     <div class="statement-title"><span data-lang="no">Bruk av industristandarder</span><span data-lang="en">Use of industry standards</span>
-                        <button type="button" class="help-btn" aria-controls="h-industry" aria-expanded="false" aria-label="Hjelp">?</button></div>
+                        <button type="button" class="help-btn" aria-controls="h-industry" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="10"></button></div>
                     <div class="help-text" id="h-industry">
                         <div data-lang="no">
                             <p><strong>Kryss bare av hvis dette gjelder dere.</strong></p>
-                            <p>Følger dere industristandarder eller anerkjent god praksis, krysser dere av og skriver navnet på standarden(e) i feltet under.
+                            <p>Følger dere industristandarder eller anerkjent god praksis, krysser dere av. Da åpnes et tekstfelt der dere skriver navnet på standarden(e). Feltet er obligatorisk.
                             Eksempler er IATA Ground Operations Manual (IGOM), IATA Airport Handling Manual (AHM) og ISAGO.</p>
                         </div>
                         <div data-lang="en">
                             <p><strong>Only tick this box if it applies to you.</strong></p>
-                            <p>If you follow industry standards or recognised good practices, tick the box and enter the name of the standard(s) in the field below.
+                            <p>If you follow industry standards or recognised good practices, tick the box. A text field then opens where you enter the name of the standard(s). This field is required.
                             Examples are the IATA Ground Operations Manual (IGOM), the IATA Airport Handling Manual (AHM) and ISAGO.</p>
                         </div>
                     </div>
-                    <div class="checkbox-row">
-                        <input type="checkbox">
+                    <div class="checkbox-row" style="margin-bottom: 0;">
+                        <input type="checkbox" id="f-industry" aria-controls="industry-ref">
                         <div class="statement-text">
                             <span data-lang="no">(Hvis relevant)<br>Bakketjenesteorganisasjonen anvender industristandarder og god praksis.</span>
                             <span data-lang="en">(If applicable)<br>The ground handling organisation implements industry standards and good practices.</span>
                         </div>
                     </div>
-                    <div style="margin-left: 30px; margin-top: 5px;">
-                        <label><span data-lang="no">Navn på industristandardene / god praksis:</span><span data-lang="en">Name of the industry standards / good practices:</span></label>
-                        <textarea rows="2" style="border: 1px solid #ccc; width: 100%;"></textarea>
+                    <div class="conditional-field" id="industry-ref">
+                        <label for="f-industry-ref"><span data-lang="no">Navn på industristandardene / god praksis:</span><span data-lang="en">Name of the industry standards / good practices:</span></label>
+                        <textarea id="f-industry-ref" rows="2" style="border: 1px solid #ccc; width: 100%;" aria-describedby="req-industry"></textarea>
+                        <span class="required-hint" id="req-industry"><span data-lang="no">Obligatorisk: Skriv navnet på industristandardene eller den gode praksisen dere følger.</span><span data-lang="en">Required: Enter the name of the industry standards or good practices you follow.</span></span>
                     </div>
                 </div>
 
@@ -1137,7 +1167,7 @@
                 <div class="bordered-section" data-modes="ny revisjon">
                     <div class="statement-title"><span data-lang="no">Avtaler med lufthavnoperatøren(e)</span><span data-lang="en">Arrangements with the aerodrome operator(s)</span>
                         <button type="button" class="help-btn" aria-controls="h-arrangements" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="10"></button></div>
+                        <button type="button" class="dev-marker" data-note="11"></button></div>
                     <div class="help-text" id="h-arrangements">
                         <div data-lang="no">
                             <p>Før dere begynner på en lufthavn, må dere ha gjort avtaler med lufthavnoperatøren. Avtalene skal dekke:</p>
@@ -1186,7 +1216,7 @@
                 <div class="bordered-section" data-modes="ny revisjon">
                     <div class="statement-title"><span data-lang="no">Samtykke til publisering av kontaktopplysninger</span><span data-lang="en">Consent to publish contact details</span>
                         <button type="button" class="help-btn" aria-controls="h-consent" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="11"></button></div>
+                        <button type="button" class="dev-marker" data-note="12"></button></div>
                     <div class="help-text" id="h-consent">
                         <div data-lang="no">
                             <p>Svarer dere «Ja», gir dere tillatelse til at kontaktopplysningene i samsvarserklæringen kan publiseres på nettsidene til
@@ -1227,7 +1257,7 @@
 
                     <label for="signature-box"><span data-lang="no">Underskrift fra ansvarlig leder:</span><span data-lang="en">Signature of accountable manager:</span>
                         <button type="button" class="help-btn" aria-controls="h-signature" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="12"></button></label>
+                        <button type="button" class="dev-marker" data-note="13"></button></label>
                     <div class="help-text" id="h-signature">
                         <div data-lang="no">Samsvarserklæringen skal signeres av ansvarlig leder (accountable manager). Signeringen skjer elektronisk når dere logger inn og sender inn skjemaet.
                         Dere trenger ikke å signere på noen annen måte.</div>
@@ -1246,15 +1276,15 @@
             <div style="text-align: center; font-weight: bold; margin-bottom: 10px; font-style: italic; padding: 15px; border: 1px solid #000;">
                 <span data-lang="no">Vedlegg til samsvarserklæringen (*)</span><span data-lang="en">Annex to the Declaration (*)</span>
                 <button type="button" class="help-btn" aria-controls="h-annex" aria-expanded="false" aria-label="Hjelp">?</button>
-                <button type="button" class="dev-marker" data-note="13"></button>
+                <button type="button" class="dev-marker" data-note="14"></button>
                 <div class="help-text" id="h-annex">
                     <div data-lang="no">
                         <p>Dere må fylle ut ett vedlegg for hver lufthavn dere har ført opp i listen over lufthavner.</p>
-                        <p>Skriv vedleggsnummeret (1, 2, 3 …) og lufthavnens ICAO-kode. Navnet på lufthavnen fylles da ut automatisk.</p>
+                        <p>Skriv lufthavnens ICAO-kode. Navnet på lufthavnen fylles da ut automatisk. Vedleggsnummeret settes automatisk.</p>
                     </div>
                     <div data-lang="en">
                         <p>You must fill in one Annex for each aerodrome in your list of aerodromes.</p>
-                        <p>Enter the Annex number (1, 2, 3 …) and the aerodrome’s ICAO code. The aerodrome name will then be filled in automatically.</p>
+                        <p>Enter the aerodrome’s ICAO code. The aerodrome name will then be filled in automatically. The Annex number is set automatically.</p>
                     </div>
                 </div>
             </div>
@@ -1266,7 +1296,7 @@
 
             <div style="border: 1px solid black;">
                 <div class="bordered-section lookup-row">
-                    <strong><span data-lang="no">Vedlegg nr.</span><span data-lang="en">Annex No</span> <input type="text" style="width: 50px; display: inline;"> <span data-lang="no">til samsvarserklæringen for</span><span data-lang="en">to the Declaration for</span></strong>
+                    <strong><span data-lang="no">Vedlegg nr.</span><span data-lang="en">Annex No</span> <span class="annex-no"></span> <span data-lang="no">til samsvarserklæringen for</span><span data-lang="en">to the Declaration for</span></strong>
                     <div style="display: flex; gap: 10px; margin-top: 5px; align-items: center;">
                         <input type="text" class="field-icao" data-ph-no="ICAO (2)" data-ph-en="ICAO (2)" style="width: 80px; text-transform: uppercase;" maxlength="4">
                         <input type="text" class="field-name" data-ph-no="Lufthavnens navn (1)" data-ph-en="Aerodrome name (1)" style="flex-grow: 1;">
@@ -1337,33 +1367,38 @@
                 <span data-lang="no">Liste over bakketjenester som ytes på lufthavnen som omfattes av dette vedlegget til samsvarserklæringen, i henhold til <a href="https://eur-lex.europa.eu/eli/reg_del/2025/20/oj" target="_blank">artikkel 2 nr. 2 i delegert forordning (EU) 2025/20</a></span>
                 <span data-lang="en">List of ground handling services provided at the aerodrome covered by this Annex to the Declaration, pursuant to <a href="https://www.easa.europa.eu/en/regulations/ground-handling" target="_blank">Article 2(2) of Delegated Regulation (EU) 2025/20</a></span>
                 <button type="button" class="help-btn" aria-controls="h-services" aria-expanded="false" aria-label="Hjelp">?</button>
+                <button type="button" class="dev-marker" data-note="10"></button>
                 <div class="help-text" id="h-services">
                     <div data-lang="no">
                         <p>Kryss av for alle bakketjenestene dere yter på denne lufthavnen.</p>
-                        <p>Der det står «spesifiser», beskriver dere kort hva tjenesten omfatter (for eksempel «innsjekking og ombordstigning» under passasjerhåndtering).</p>
-                        <p>For avising og antiising skriver dere også om dere har ansvar for å føre tilsyn med avisingen.</p>
+                        <p>Der det står «spesifiser», åpnes et tekstfelt når dere krysser av. Der beskriver dere kort hva tjenesten omfatter (for eksempel «innsjekking og ombordstigning» under passasjerhåndtering). Feltet er obligatorisk.</p>
+                        <p>For avising og antiising åpnes også et obligatorisk tekstfelt. Der skriver dere om dere har ansvar for å føre tilsyn med avisingen.</p>
                         <p>Under «Farlig gods» krysser dere av hvis personellet deres håndterer farlig gods i forbindelse med de tjenestene som står oppført.</p>
                     </div>
                     <div data-lang="en">
                         <p>Tick all the ground handling services you provide at this aerodrome.</p>
-                        <p>Where it says “please specify”, briefly describe what the service covers (for example “check-in and boarding” under passenger handling).</p>
-                        <p>For de-icing/anti-icing, also state whether you are responsible for supervising the de-icing.</p>
+                        <p>Where it says “please specify”, a text field opens when you tick the box. Briefly describe what the service covers (for example “check-in and boarding” under passenger handling). This field is required.</p>
+                        <p>For de-icing/anti-icing, a required text field also opens. State whether you are responsible for supervising the de-icing.</p>
                         <p>Under “Dangerous goods”, tick the boxes if your staff handle dangerous goods as part of the services listed.</p>
                     </div>
                 </div>
             </div>
 
             <table style="width: 100%; margin-top: 10px;">
-                <tr>
-                    <td><span data-lang="no">Passasjerhåndtering (artikkel 2 nr. 2 bokstav a) — spesifiser:</span><span data-lang="en">Passenger handling (Article 2(2), point (a)) — please specify:</span><br><input type="text"></td>
+                <tr class="service-specify">
+                    <td><span data-lang="no">Passasjerhåndtering (artikkel 2 nr. 2 bokstav a) — spesifiser:</span><span data-lang="en">Passenger handling (Article 2(2), point (a)) — please specify:</span>
+                        <div class="conditional-field"><input type="text" aria-describedby="req-pax">
+                            <span class="required-hint" id="req-pax"><span data-lang="no">Obligatorisk: Beskriv kort hvilke tjenester innen passasjerhåndtering dere yter.</span><span data-lang="en">Required: Briefly describe which passenger handling services you provide.</span></span></div></td>
                     <td width="5%" align="center"><input type="checkbox"></td>
                 </tr>
                 <tr>
                     <td><span data-lang="no">Håndtering av passasjerer med nedsatt bevegelighet (artikkel 2 nr. 2 bokstav a)</span><span data-lang="en">Handling of passengers with reduced mobility (Article 2(2), point (a))</span></td>
                     <td width="5%" align="center"><input type="checkbox"></td>
                 </tr>
-                <tr>
-                    <td><span data-lang="no">Bagasjehåndtering (artikkel 2 nr. 2 bokstav b) — spesifiser:</span><span data-lang="en">Baggage handling (Article 2(2), point (b)) — please specify:</span><br><input type="text"></td>
+                <tr class="service-specify">
+                    <td><span data-lang="no">Bagasjehåndtering (artikkel 2 nr. 2 bokstav b) — spesifiser:</span><span data-lang="en">Baggage handling (Article 2(2), point (b)) — please specify:</span>
+                        <div class="conditional-field"><input type="text" aria-describedby="req-bag">
+                            <span class="required-hint" id="req-bag"><span data-lang="no">Obligatorisk: Beskriv kort hvilke tjenester innen bagasjehåndtering dere yter.</span><span data-lang="en">Required: Briefly describe which baggage handling services you provide.</span></span></div></td>
                     <td width="5%" align="center"><input type="checkbox"></td>
                 </tr>
 
@@ -1391,11 +1426,12 @@
                     <td><span data-lang="no">Utvendig rengjøring av luftfartøy (artikkel 2 nr. 2 bokstav c) v))</span><span data-lang="en">Aircraft exterior cleaning (Article 2(2), point (c)(v))</span></td>
                     <td align="center"><input type="checkbox"></td>
                 </tr>
-                <tr>
+                <tr class="service-specify">
                     <td>
                         <span data-lang="no">Avising og antiising av luftfartøy (artikkel 2 nr. 2 bokstav c) vi)); oppgi også om det utføres tilsyn med avising/antiising:</span>
-                        <span data-lang="en">Aircraft de-icing/anti-icing (Article 2(2), point (c)(vi)); also specify if supervision of de-icing/anti-icing is provided:</span><br>
-                        <input type="text">
+                        <span data-lang="en">Aircraft de-icing/anti-icing (Article 2(2), point (c)(vi)); also specify if supervision of de-icing/anti-icing is provided:</span>
+                        <div class="conditional-field"><input type="text" aria-describedby="req-deice">
+                            <span class="required-hint" id="req-deice"><span data-lang="no">Obligatorisk: Oppgi om dere utfører tilsyn med avising/antiising.</span><span data-lang="en">Required: State whether you provide supervision of de-icing/anti-icing.</span></span></div>
                     </td>
                     <td align="center"><input type="checkbox"></td>
                 </tr>
@@ -1661,7 +1697,13 @@
             },
             7: {
                 title: 'Gjensidig utelukkende valg',
-                html: `<p>Vi ønsker at brukeren bare kan velge én av de tre organisasjonstypene. Valgene utelukker hverandre, og vi ønsker at valgene som ikke er aktive, gråes ut og låses.</p>`
+                html: `<p>Vi ønsker at brukeren bare kan velge én av de tre organisasjonstypene. Valgene utelukker hverandre, og vi ønsker at valgene som ikke er aktive, gråes ut og låses.</p>
+                    <p><strong>Obligatorisk navn:</strong> Velger brukeren <em>en integrert del av en lufthavnoperatør</em> eller <em>en integrert del av en luftfartøyoperatør eller av ett enkelt konsern av luftfartsselskaper</em>, ønsker vi at tekstfeltet for navnet blir obligatorisk. Under feltet vises da en melding om at det må fylles ut (for eksempel «Obligatorisk: Skriv navnet på lufthavnoperatøren.»).</p>
+                    <ul>
+                        <li>Feltet er bare obligatorisk når valget det hører til, er krysset av. Bytter brukeren valg, tømmes feltet og er ikke lenger obligatorisk.</li>
+                        <li>I Altinn kan dette løses med betinget obligatorisk felt (dynamisk <code>required</code>-uttrykk) og Altinns valideringsmelding.</li>
+                        <li>Prototypen viser rød understrek hvis brukeren forlater feltet tomt. Innsendingen stoppes ikke i prototypen.</li>
+                    </ul>`
             },
             8: {
                 title: 'Frist på 10 virkedager (AMC1 ORGH.DEC.100)',
@@ -1693,6 +1735,23 @@
                 html: `<p>Når brukeren taster inn en ICAO-kode på fire bokstaver (f.eks. ENBO), ønsker vi at koden slås opp i et register i bakgrunnen. Da fylles lufthavnens navn («Aerodrome name») og land («State») ut automatisk. Det hindrer skrivefeil og sikrer god datakvalitet.</p>`
             },
             10: {
+                title: 'Obligatorisk tekstfelt ved avkrysning (AltMoC, industristandarder og tjenester)',
+                html: `
+                    <p>Notatet gjelder tre steder i skjemaet:</p>
+                    <ul>
+                        <li><strong>Alternative samsvarsmetoder (AltMoC):</strong> Krysser brukeren av, ønsker vi at det åpnes et tekstfelt rett under avkrysningsboksen. Der oppgir brukeren hvilke AltMoC organisasjonen bruker, og hvilken AMC hver av dem erstatter.</li>
+                        <li><strong>Bruk av industristandarder:</strong> Krysser brukeren av, ønsker vi at tekstfeltet for navnet på industristandardene / god praksis åpnes rett under avkrysningsboksen.</li>
+                        <li><strong>Liste over bakketjenester i vedlegget:</strong> Ved passasjerhåndtering, bagasjehåndtering («spesifiser») og avising/antiising (tilsyn) ønsker vi at tekstfeltet åpnes i raden når brukeren krysser av for tjenesten.</li>
+                    </ul>
+                    <p>For alle feltene:</p>
+                    <ul>
+                        <li>Vi ønsker at feltet er obligatorisk når boksen er krysset av, med en melding under feltet om at det må fylles ut.</li>
+                        <li>Fjernes avkrysningen, skjules og tømmes feltet, og det er ikke lenger obligatorisk.</li>
+                        <li>I Altinn kan dette løses med dynamikk (vis/skjul) og betinget obligatorisk felt (dynamisk <code>required</code>-uttrykk).</li>
+                        <li>AltMoC-feltet er ikke en del av Appendix 1 i forordningen. Det er lagt til fordi bekreftelsesteksten viser til en henvisning som myndigheten ellers ikke får i skjemaet. Feltene for industristandarder og for tjenestene står i Appendix 1. De er bare gjort betinget og obligatorisk.</li>
+                    </ul>`
+            },
+            11: {
                 title: 'Utdypende informasjon (Arrangements)',
                 html: `<p><strong>Spesifikt krav fra EASA:</strong> Vi ønsker derfor at bare avkrysningsboksen og bekreftelsesteksten er synlige i skjemaet, og at underpunktene a)–d) <em>ikke</em> står i selve erklæringsteksten. De vises i stedet i informasjonsboksen som åpnes med hjelpetekst-knappen (<strong>?</strong>). Dette avviker fra Appendix 1 i forordningen, der punktene står i erklæringsteksten («such as but not limited to»).</p>
                     <ul>
@@ -1707,17 +1766,23 @@
                         d) participation in the aerodrome safety committees.</p>
                     </details>`
             },
-            11: {
+            12: {
                 title: 'Veiledning (Consent to publish)',
                 html: `<p>Vi ønsker at valgene har en hjelpetekst som forklarer hva det betyr å svare «Ja»/«Yes» og «Nei»/«No». Teksten vises via hjelpetekst-knappen (<strong>?</strong>).</p>`
             },
-            12: {
+            13: {
                 title: 'Autentisering / Signatur',
                 html: `<p>Dette feltet viser bare at samsvarserklæringen må signeres. Vi ønsker at den faktiske, juridiske signeringen av «Accountable Manager» skjer gjennom plattformens vanlige innlogging og autentisering når skjemaet sendes inn.</p>`
             },
-            13: {
+            14: {
                 title: 'Repeterende Annex-seksjon',
-                html: `<p>Vi ønsker at brukeren kan legge til flere lufthavner, og at hele «Annex»-seksjonen kan dupliseres for hver ny lufthavn aktøren legger inn, slik at aktøren kan knytte bestemte tjenester til hver enkelt stasjon de opererer på.</p>`
+                html: `<p>Vi ønsker at brukeren kan legge til flere lufthavner, og at hele «Annex»-seksjonen kan dupliseres for hver ny lufthavn aktøren legger inn, slik at aktøren kan knytte bestemte tjenester til hver enkelt stasjon de opererer på.</p>
+                    <p><strong>Automatisk vedleggsnummer:</strong> Vi ønsker at vedleggsnummeret settes automatisk, slik at brukeren slipper å fylle det ut. Første vedlegg får nr. 1, neste nr. 2 osv. Slettes et vedlegg, ønsker vi at de andre nummereres på nytt, så det ikke blir hull i rekken.</p>
+                    <ul>
+                        <li>I Altinn kan nummeret hentes fra indeksen i repeterende gruppe (indeks + 1) og vises som skrivebeskyttet tekst.</li>
+                        <li>Det kan også vurderes å koble vedleggsnummeret til nummeret (Nr.) lufthavnen har i listen over lufthavner, slik at vedlegg 2 alltid hører til lufthavn nr. 2.</li>
+                        <li>Prototypen har bare ett vedlegg. Nummereringen er likevel laget slik at den teller vedleggene i rekkefølge.</li>
+                    </ul>`
             }
         };
 
@@ -1873,19 +1938,59 @@
                     const rowRadio = row.querySelector('input[type="radio"]');
                     const textInputs = row.querySelectorAll('input[type="text"]');
 
+                    row.classList.toggle('selected', rowRadio.checked);
                     if (rowRadio.checked) {
                         row.style.opacity = '1';
-                        textInputs.forEach(input => input.disabled = false);
+                        textInputs.forEach(input => {
+                            input.disabled = false;
+                            input.required = true; // Navn er obligatorisk for valgt type
+                        });
                     } else {
                         row.style.opacity = '0.4';
                         textInputs.forEach(input => {
                             input.disabled = true;
+                            input.required = false;
                             input.value = ''; // Tømmer innhold hvis brukeren bytter valg
+                            input.classList.remove('missing');
                         });
                     }
                 });
             });
         });
+
+        // Markér obligatorisk navnefelt som mangler når brukeren forlater det tomt
+        document.querySelectorAll('.org-type-row input[type="text"]').forEach(input => {
+            input.addEventListener('blur', () => input.classList.toggle('missing', input.required && !input.value.trim()));
+            input.addEventListener('input', () => { if (input.value.trim()) input.classList.remove('missing'); });
+        });
+
+        // --- AltMoC, industristandarder og tjenester med «spesifiser»: obligatorisk tekstfelt når boksen er krysset av (Notat 10) ---
+        function conditionalRequired(checkboxId, fieldId, textareaId) {
+            conditionalRequiredEl(document.getElementById(checkboxId),
+                document.getElementById(fieldId), document.getElementById(textareaId));
+        }
+        function conditionalRequiredEl(box, field, text) {
+            box.addEventListener('change', () => {
+                field.classList.toggle('open', box.checked);
+                text.required = box.checked;
+                if (!box.checked) { text.value = ''; text.classList.remove('missing'); }
+            });
+            text.addEventListener('blur', () => text.classList.toggle('missing', text.required && !text.value.trim()));
+            text.addEventListener('input', () => { if (text.value.trim()) text.classList.remove('missing'); });
+        }
+        conditionalRequired('f-altmoc', 'altmoc-ref', 'f-altmoc-ref');
+        conditionalRequired('f-industry', 'industry-ref', 'f-industry-ref');
+        // Tjenester med «spesifiser»: avkrysningsboksen står i siste kolonne i raden
+        document.querySelectorAll('tr.service-specify').forEach(row => {
+            const field = row.querySelector('.conditional-field');
+            conditionalRequiredEl(row.querySelector('td:last-child input[type="checkbox"]'), field, field.querySelector('input'));
+        });
+
+        // --- Automatisk vedleggsnummer (Notat 14) ---
+        function numberAnnexes() {
+            document.querySelectorAll('.annex-no').forEach((el, i) => { el.textContent = i + 1; });
+        }
+        numberAnnexes();
 
         // --- ICAO Database og Autofill Logikk (Notat 9) ---
         const airportDb = {
