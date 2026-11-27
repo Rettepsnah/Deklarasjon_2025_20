@@ -302,7 +302,6 @@
         .mode-card input { margin-top: 3px; transform: scale(1.2); }
         .mode-card .mode-title { font-weight: bold; font-size: 14px; display: block; margin-bottom: 3px; }
         .mode-card .mode-desc { font-size: 12px; display: block; }
-        .mode-card .mode-fee { font-size: 11px; display: block; margin-top: 4px; color: #555; font-style: italic; }
         .mode-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
         .form-btn {
             border: none; background: var(--primary-blue); color: #fff; font-weight: bold;
@@ -330,10 +329,10 @@
         /* Ved avvikling står avslutningsboksen alene og trenger egen toppkant */
         form[data-mode="avvikling"] .closing-box { border-top: 1px solid #000 !important; }
 
-        /* --- Gebyr (Notat 11) --- */
+        /* --- Gebyr (Notat 3) --- */
         .fee-box {
-            border: 1px solid #000; border-left: 4px solid var(--primary-blue);
-            padding: 10px 12px; margin-bottom: -1px;
+            background: var(--help-blue); border-left: 3px solid var(--primary-blue);
+            padding: 10px 12px; margin-top: 14px;
         }
 
         /* --- Disabled Signature Box --- */
@@ -418,8 +417,8 @@
         <button type="button" id="showAllNotes">Vis alle notater</button>
         <button type="button" id="printWithNotes">Skriv ut med notater</button>
         <div class="legend">
-            <span><span class="dev-marker" style="margin:0;cursor:default;vertical-align:middle">Notat</span> Til utvikler – skal ikke vises i skjemaet</span>
-            <span><span class="help-btn" style="margin:0;cursor:default">?</span> Hjelpetekst til søker – skal med i Altinn-skjemaet</span>
+            <span><span class="dev-marker" style="margin:0;cursor:default;vertical-align:middle">Notat</span> Til utvikler – ikke ment å vises i skjemaet</span>
+            <span><span class="help-btn" style="margin:0;cursor:default">?</span> Hjelpetekst til søker – ønskes med i Altinn-skjemaet</span>
         </div>
     </div>
 
@@ -429,13 +428,13 @@
             <strong style="color: #e65100; font-size: 14px;">Utviklernotat: Skjemamoduser og Dataintegrasjon</strong><br><br>
             Skjemaet har tre moduser. Brukeren velger modus på en egen startside før selve skjemaet vises (se Notat 2):<br>
             <strong>1. Ny samsvarserklæring:</strong> Et blankt skjema for aktører som sender inn samsvarserklæring for første gang.<br>
-            <strong>2. Revisjon av samsvarserklæring:</strong> For å sikre en smidig og effektiv prosess, må skjemaet kunne hente informasjon "motsatt vei" (f.eks. integrasjon mot EMPIC). Ved revisjon skal feltene forhåndsutfylles med aktørens eksisterende data, slik at brukeren kun trenger å forholde seg til det som faktisk skal endres.<br>
-            <strong>3. Avvikling av drift:</strong> Aktøren melder at de slutter permanent med bakketjenester på én eller flere lufthavner (ORGH.DEC.105). Se Notat 4.
+            <strong>2. Revisjon av samsvarserklæring:</strong> For å sikre en smidig og effektiv prosess ønsker vi at skjemaet kan hente informasjon "motsatt vei" (f.eks. integrasjon mot EMPIC). Ved revisjon ønsker vi at feltene forhåndsutfylles med aktørens eksisterende data, slik at brukeren kun trenger å forholde seg til det som faktisk skal endres.<br>
+            <strong>3. Avvikling av drift:</strong> Aktøren melder at de slutter permanent med bakketjenester på én eller flere lufthavner (ORGH.DEC.105). Se Notat 5.
             <br><br>
-            <strong style="color: #e65100;">Gebyr:</strong> Innsending av samsvarserklæringen utløser gebyr etter gebyrforskriften for Luftfartstilsynet. Se Notat 11.
+            <strong style="color: #e65100;">Gebyr:</strong> Ny samsvarserklæring og revisjon utløser gebyr etter gebyrforskriften for Luftfartstilsynet. Informasjonen står bare på startsiden, ikke i selve skjemaet. Se Notat 3.
             <br><br>
-            <strong style="color: #e65100;">Hjelpetekster:</strong> Alle blå <strong>?</strong>-knapper viser en hjelpetekst til søkeren. Disse tekstene er ferdig formulert
-            og skal implementeres i Altinn-skjemaet (f.eks. med Altinns hjelpetekst-komponent).
+            <strong style="color: #e65100;">Hjelpetekster:</strong> Alle blå <strong>?</strong>-knapper viser en hjelpetekst til søkeren. Disse tekstene er ferdig formulert,
+            og vi ønsker at de tas inn i Altinn-skjemaet (f.eks. med Altinns hjelpetekst-komponent).
             Klikk på de oransje <em>Notat</em>-merkene for å lese utviklernotatene.
             <br><br>
             <strong style="color: #e65100;">Språk:</strong> Skjemaet finnes på norsk og engelsk (se språkvelgeren øverst til høyre i skjemaet). Den engelske skjemateksten bygger på Appendix 1 i forordningen, men oppsettet avviker bevisst noen steder. Den norske er en arbeidsoversettelse. Se Notat 1.
@@ -501,7 +500,6 @@
                         <span>
                             <span class="mode-title"><span data-lang="no">Ny samsvarserklæring</span><span data-lang="en">New declaration</span></span>
                             <span class="mode-desc"><span data-lang="no">Første gang dere sender inn samsvarserklæring for bakketjenester.</span><span data-lang="en">The first time you submit a declaration for ground handling services.</span></span>
-                            <span class="mode-fee"><span data-lang="no">Utløser gebyr etter gebyrforskriften for Luftfartstilsynet.</span><span data-lang="en">Triggers a fee under the fee regulations of the Norwegian Civil Aviation Authority.</span></span>
                         </span>
                     </label>
                     <label class="mode-card">
@@ -509,7 +507,6 @@
                         <span>
                             <span class="mode-title"><span data-lang="no">Revisjon av samsvarserklæring</span><span data-lang="en">Amendment of declaration</span></span>
                             <span class="mode-desc"><span data-lang="no">Endringer i en samsvarserklæring dere allerede har sendt inn. Skjemaet er forhåndsutfylt.</span><span data-lang="en">Changes to a declaration you have already submitted. The form is pre-filled.</span></span>
-                            <span class="mode-fee"><span data-lang="no">Utløser gebyr etter gebyrforskriften for Luftfartstilsynet.</span><span data-lang="en">Triggers a fee under the fee regulations of the Norwegian Civil Aviation Authority.</span></span>
                         </span>
                     </label>
                     <label class="mode-card">
@@ -520,6 +517,27 @@
                         </span>
                     </label>
                 </div>
+                <!-- Gebyr: bare på startsiden, ikke i selve skjemaet (harmonisert oppsett, se Notat 3) -->
+                <div class="fee-box">
+                    <div class="statement-title" style="margin-bottom: 4px;"><span data-lang="no">Gebyr</span><span data-lang="en">Fee</span>
+                        <button type="button" class="help-btn" aria-controls="h-fee" aria-expanded="false" aria-label="Hjelp">?</button>
+                        <button type="button" class="dev-marker" data-note="3"></button></div>
+                    <div class="help-text" id="h-fee">
+                        <div data-lang="no">
+                            <p>Luftfartstilsynet tar gebyr for å behandle samsvarserklæringer. Gebyret er fastsatt i forskrift om gebyr til Luftfartstilsynet (gebyrforskriften).</p>
+                            <p>Gebyrforskriften fastsettes for ett år om gangen. Gjeldende satser finner dere i forskriften på Lovdata og på nettsidene til Luftfartstilsynet.</p>
+                        </div>
+                        <div data-lang="en">
+                            <p>The Norwegian Civil Aviation Authority (Luftfartstilsynet) charges a fee for processing declarations. The fee is set out in the Regulations on fees to the Civil Aviation Authority (gebyrforskriften).</p>
+                            <p>The fee regulations are set for one year at a time. You can find the current rates in the regulations on Lovdata and on the Civil Aviation Authority’s website.</p>
+                        </div>
+                    </div>
+                    <div class="statement-text">
+                        <span data-lang="no">Ny samsvarserklæring og revisjon av samsvarserklæring utløser gebyr til Luftfartstilsynet, som fastsatt i forskrift om gebyr til Luftfartstilsynet (gebyrforskriften).</span>
+                        <span data-lang="en">A new declaration and an amendment of a declaration trigger a fee payable to the Norwegian Civil Aviation Authority (Luftfartstilsynet), as set out in the Regulations on fees to the Civil Aviation Authority (gebyrforskriften).</span>
+                    </div>
+                </div>
+
                 <div class="mode-actions">
                     <button type="button" class="form-btn" id="modeContinue" disabled><span data-lang="no">Fortsett</span><span data-lang="en">Continue</span></button>
                 </div>
@@ -543,7 +561,7 @@
                     <span data-lang="no">Revisjon av samsvarserklæring</span>
                     <span data-lang="en">Amendment of declaration</span>
                     <button type="button" class="help-btn" aria-controls="h-revision" aria-expanded="false" aria-label="Hjelp">?</button>
-                    <button type="button" class="dev-marker" data-note="3"></button>
+                    <button type="button" class="dev-marker" data-note="4"></button>
                 </div>
                 <div class="help-text" id="h-revision">
                     <div data-lang="no">
@@ -580,7 +598,7 @@
                     <span data-lang="no">Avvikling av bakketjenester</span>
                     <span data-lang="en">Termination of the provision of ground handling services</span>
                     <button type="button" class="help-btn" aria-controls="h-termination" aria-expanded="false" aria-label="Hjelp">?</button>
-                    <button type="button" class="dev-marker" data-note="4"></button>
+                    <button type="button" class="dev-marker" data-note="5"></button>
                 </div>
                 <div class="help-text" id="h-termination">
                     <div data-lang="no">
@@ -687,7 +705,7 @@
                 <div class="form-row">
                     <label for="f-ppob"><span data-lang="no">Organisasjonens hovedforretningssted:</span><span data-lang="en">Organisation’s principal place of business:</span>
                         <button type="button" class="help-btn" aria-controls="h-ppob" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="5"></button></label>
+                        <button type="button" class="dev-marker" data-note="6"></button></label>
                     <div class="help-text" id="h-ppob">
                         <div data-lang="no">
                             <p><strong>Hva er hovedforretningssted?</strong><br>
@@ -769,7 +787,7 @@
                 <div class="form-row">
                     <strong><span data-lang="no">Denne organisasjonen er:</span><span data-lang="en">This organisation is:</span></strong>
                     <button type="button" class="help-btn" aria-controls="h-orgtype" aria-expanded="false" aria-label="Hjelp">?</button>
-                    <button type="button" class="dev-marker" data-note="6"></button>
+                    <button type="button" class="dev-marker" data-note="7"></button>
                     <div class="help-text" id="h-orgtype">
                         <div data-lang="no">
                             <p>Velg ett av alternativene:</p>
@@ -827,7 +845,7 @@
                 <div class="form-row">
                     <label for="f-start"><span data-lang="no">Planlagt dato for oppstart av bakketjenester</span><span data-lang="en">Intended date of starting ground handling operations</span><sup>(**)</sup>:
                         <button type="button" class="help-btn" aria-controls="h-start" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="7"></button></label>
+                        <button type="button" class="dev-marker" data-note="8"></button></label>
                     <div class="help-text" id="h-start">
                         <div data-lang="no">
                             <p>Skriv datoen dere planlegger å begynne med bakketjenester.</p>
@@ -862,7 +880,7 @@
 
                 <label for="icao-1"><span data-lang="no">Lufthavn(er) i EU/EØS der organisasjonen yter tjenester, med fullt navn og ICAO-kode:</span><span data-lang="en">EU aerodrome(s) at which the organisation provides services, in full name and ICAO code:</span>
                     <button type="button" class="help-btn" aria-controls="h-aerodromes" aria-expanded="false" aria-label="Hjelp">?</button>
-                    <button type="button" class="dev-marker" data-note="8"></button></label>
+                    <button type="button" class="dev-marker" data-note="9"></button></label>
                 <div class="help-text" id="h-aerodromes">
                     <div data-lang="no">
                         <p>Før opp alle lufthavnene i EU/EØS der dere yter bakketjenester.</p>
@@ -1068,7 +1086,7 @@
                 <div class="bordered-section">
                     <div class="statement-title"><span data-lang="no">Melding om endringer</span><span data-lang="en">Notification of changes</span>
                         <button type="button" class="help-btn" aria-controls="h-changes" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="3"></button></div>
+                        <button type="button" class="dev-marker" data-note="4"></button></div>
                     <div class="help-text" id="h-changes">
                         <div data-lang="no">
                             <p>Her forplikter dere dere til å gi beskjed til myndigheten hvis noe av det som står i samsvarserklæringen, endrer seg.</p>
@@ -1119,7 +1137,7 @@
                 <div class="bordered-section" data-modes="ny revisjon">
                     <div class="statement-title"><span data-lang="no">Avtaler med lufthavnoperatøren(e)</span><span data-lang="en">Arrangements with the aerodrome operator(s)</span>
                         <button type="button" class="help-btn" aria-controls="h-arrangements" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="9"></button></div>
+                        <button type="button" class="dev-marker" data-note="10"></button></div>
                     <div class="help-text" id="h-arrangements">
                         <div data-lang="no">
                             <p>Før dere begynner på en lufthavn, må dere ha gjort avtaler med lufthavnoperatøren. Avtalene skal dekke:</p>
@@ -1168,7 +1186,7 @@
                 <div class="bordered-section" data-modes="ny revisjon">
                     <div class="statement-title"><span data-lang="no">Samtykke til publisering av kontaktopplysninger</span><span data-lang="en">Consent to publish contact details</span>
                         <button type="button" class="help-btn" aria-controls="h-consent" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="10"></button></div>
+                        <button type="button" class="dev-marker" data-note="11"></button></div>
                     <div class="help-text" id="h-consent">
                         <div data-lang="no">
                             <p>Svarer dere «Ja», gir dere tillatelse til at kontaktopplysningene i samsvarserklæringen kan publiseres på nettsidene til
@@ -1192,27 +1210,6 @@
                         <label style="display: flex; align-items: center; gap: 5px;">
                             <input type="radio" name="consent_pub" value="no" required> <span data-lang="no">Nei</span><span data-lang="en">No</span>
                         </label>
-                    </div>
-                </div>
-
-                <!-- ================= GEBYR (Notat 11) ================= -->
-                <div class="bordered-section" data-modes="ny revisjon">
-                    <div class="statement-title"><span data-lang="no">Gebyr</span><span data-lang="en">Fee</span>
-                        <button type="button" class="help-btn" aria-controls="h-fee" aria-expanded="false" aria-label="Hjelp">?</button>
-                        <button type="button" class="dev-marker" data-note="11"></button></div>
-                    <div class="help-text" id="h-fee">
-                        <div data-lang="no">
-                            <p>Luftfartstilsynet tar gebyr for å behandle samsvarserklæringer. Gebyret er fastsatt i forskrift om gebyr til Luftfartstilsynet (gebyrforskriften).</p>
-                            <p>Gebyrforskriften fastsettes for ett år om gangen. Gjeldende satser finner dere i forskriften på Lovdata og på nettsidene til Luftfartstilsynet.</p>
-                        </div>
-                        <div data-lang="en">
-                            <p>The Norwegian Civil Aviation Authority (Luftfartstilsynet) charges a fee for processing declarations. The fee is set out in the Regulations on fees to the Civil Aviation Authority (gebyrforskriften).</p>
-                            <p>The fee regulations are set for one year at a time. You can find the current rates in the regulations on Lovdata and on the Civil Aviation Authority’s website.</p>
-                        </div>
-                    </div>
-                    <div class="statement-text">
-                        <span data-lang="no">Innsending av denne samsvarserklæringen utløser gebyr til Luftfartstilsynet som fastsatt i forskrift om gebyr til Luftfartstilsynet (gebyrforskriften).</span>
-                        <span data-lang="en">Submitting this declaration triggers a fee payable to the Norwegian Civil Aviation Authority (Luftfartstilsynet), as set out in the Regulations on fees to the Civil Aviation Authority (gebyrforskriften).</span>
                     </div>
                 </div>
 
@@ -1516,12 +1513,12 @@
             1: {
                 title: 'Språkvalg (norsk / engelsk)',
                 html: `
-                    <p>Skjemaet skal kunne vises på norsk og engelsk. Brukeren bytter språk med språkvelgeren øverst til høyre. I Altinn løses dette med den innebygde språkvelgeren og tekstressurser per språk (<code>nb</code> og <code>en</code>). Alle ledetekster, hjelpetekster, alternativer og plassholdertekster må ha en tekstressurs på begge språk.</p>
+                    <p>Vi ønsker at skjemaet kan vises på norsk og engelsk. Brukeren bytter språk med språkvelgeren øverst til høyre. I Altinn kan dette løses med den innebygde språkvelgeren og tekstressurser per språk (<code>nb</code> og <code>en</code>). Da trenger alle ledetekster, hjelpetekster, alternativer og plassholdertekster en tekstressurs på begge språk.</p>
                     <ul>
                         <li><strong>Engelsk variant:</strong> Skjemateksten bygger på ordlyden i Appendix 1 i delegert forordning (EU) 2025/20. Oppsettet i dette skjemaet er likevel bestemmende og avviker bevisst fra den første versjonen i regelverket. For eksempel er «Towing» og «Pushback» slått sammen til ett punkt etter anmodning fra EASA. Hjelpetekstene er skrevet på klart, enkelt engelsk.</li>
                         <li><strong>Norsk variant:</strong> Skjemateksten er en <em>arbeidsoversettelse</em>, fordi det foreløpig ikke finnes noen offisiell norsk oversettelse av forordningen. Når forordningen gjennomføres i norsk forskrift, bør teksten kontrolleres mot den offisielle oversettelsen. Hjelpetekstene er på klarspråk.</li>
                         <li><strong>Utviklernotater</strong> er alltid på norsk.</li>
-                        <li>Det som er lagret i skjemaet, skal ikke påvirkes av språkvalget. Valgt språk kan lagres som metadata på innsendingen.</li>
+                        <li>Vi ønsker at det som lagres i skjemaet, ikke påvirkes av språkvalget. Valgt språk kan lagres som metadata på innsendingen.</li>
                     </ul>
                     <details open>
                         <summary>Begrepsliste (engelsk → norsk)</summary>
@@ -1530,7 +1527,7 @@
                             <tr><th>Engelsk</th><th>Norsk</th><th>Kommentar</th></tr>
                             <tr><td>Declaration</td><td>Samsvarserklæring</td><td>Som i EØS-notatet om forordning (EU) 2025/20: «samsvarserklæring (declaration)». Brukes i skjematittel og i all skjematekst. «Deklarasjon» brukes bare internt.</td></tr>
                             <tr><td>Ground handling (services)</td><td>Bakketjenester</td><td>Som i brødteksten i EØS-notatene. Den formelle tittelen på forordning (EU) 2025/20 bruker «bakkehåndteringstjenester».</td></tr>
-                            <tr><td>Ground handling organisation</td><td>Bakketjenesteorganisasjon</td><td>Kildeteksten i Notat 5 bruker «GH-organisasjon». I skjemaet er det norske ordet valgt.</td></tr>
+                            <tr><td>Ground handling organisation</td><td>Bakketjenesteorganisasjon</td><td>Kildeteksten i Notat 6 bruker «GH-organisasjon». I skjemaet er det norske ordet valgt.</td></tr>
                             <tr><td>Self-handling</td><td>Egenhåndtering</td><td>Brukt i EØS-notatet om forordning (EU) 2025/24.</td></tr>
                             <tr><td>Aircraft operator</td><td>Luftfartøyoperatør</td><td>Som i forordning (EU) nr. 965/2012.</td></tr>
                             <tr><td>Aerodrome</td><td>Lufthavn</td><td>Som i EØS-notatet om forordning (EU) 2025/20, som bare bruker «lufthavn». Erstatter «flyplass» i hele skjemaet.</td></tr>
@@ -1561,15 +1558,29 @@
                     <p>Første side i skjemaet er et valg mellom tre typer innsending. Resten av skjemaet vises først når brukeren har valgt og trykket <em>Fortsett</em>. Valget vises deretter øverst, med en knapp for å endre det.</p>
                     <table>
                         <tr><th>Valg</th><th>Dette vises</th></tr>
-                        <tr><td><strong>Ny samsvarserklæring</strong></td><td>Hele skjemaet med vedlegg, blankt. Gebyrinformasjon.</td></tr>
-                        <tr><td><strong>Revisjon av samsvarserklæring</strong></td><td>Boks for hva endringen gjelder (de seks punktene i ORGH.DEC.100 b)) og dato endringen trer i kraft, og deretter hele skjemaet forhåndsutfylt fra EMPIC. Gebyrinformasjon.</td></tr>
-                        <tr><td><strong>Avvikling av drift</strong></td><td>Organisasjonens navn, ansvarlig leder, avviklingsboksen (Notat 4), «Riktige opplysninger» og signatur.</td></tr>
+                        <tr><td><strong>Ny samsvarserklæring</strong></td><td>Hele skjemaet med vedlegg, blankt.</td></tr>
+                        <tr><td><strong>Revisjon av samsvarserklæring</strong></td><td>Boks for hva endringen gjelder (de seks punktene i ORGH.DEC.100 b)) og dato endringen trer i kraft, og deretter hele skjemaet forhåndsutfylt fra EMPIC.</td></tr>
+                        <tr><td><strong>Avvikling av drift</strong></td><td>Organisasjonens navn, ansvarlig leder, avviklingsboksen (Notat 5), «Riktige opplysninger» og signatur.</td></tr>
                     </table>
                     <p>I Altinn kan dette løses som en egen første side med radioknapper og dynamikk (vis/skjul) på resten av sidene, eller som tre separate skjemaer bak et felles inngangsvalg.</p>
-                    <p>Valget bør lagres som metadata på innsendingen, slik at saksbehandler straks ser hva slags sak det er.</p>
+                    <p>Vi ønsker at valget lagres som metadata på innsendingen, slik at saksbehandler straks ser hva slags sak det er.</p>
                     <p>Prototypen husker ikke valget hvis siden lastes på nytt.</p>`
             },
             3: {
+                title: 'Gebyr (gebyrforskriften)',
+                html: `
+                    <p>Vi ønsker at søkeren får vite at ny samsvarserklæring og revisjon av samsvarserklæring utløser gebyr etter forskrift om gebyr til Luftfartstilsynet (gebyrforskriften).</p>
+                    <p><strong>Vi ønsker at informasjonen bare står på startsiden</strong>, i en egen boks under de tre valgene, med hjelpetekst, og at den <em>ikke</em> er en del av selve samsvarserklæringsskjemaet. EASA ønsker at oppsettet av skjemaet skal være harmonisert i alle medlemslandene, og gebyret er en nasjonal ordning.</p>
+                    <p>Boksen forsvinner sammen med resten av startsiden når brukeren trykker <em>Fortsett</em>, og kommer ikke med på utskriften av skjemaet.</p>
+                    <p><strong>Til avklaring før produksjon:</strong></p>
+                    <ul>
+                        <li>Hvilken paragraf i gebyrforskriften som gjelder, og om satsen skal stå i skjemaet. Forskriften fastsettes årlig, så en sats i skjemateksten må oppdateres hvert år. Teksten i prototypen nevner derfor ikke paragraf eller beløp.</li>
+                        <li>Om revisjon av samsvarserklæring utløser samme gebyr som en ny samsvarserklæring, et lavere gebyr eller ikke noe gebyr. Teksten i prototypen sier at både ny og revisjon utløser gebyr.</li>
+                        <li>Om avvikling av drift er gebyrfritt. Teksten i prototypen nevner ikke gebyr for avvikling.</li>
+                        <li>Vi ønsker gjerne lenker til gjeldende forskrift på Lovdata og til Luftfartstilsynets gebyrside i hjelpeteksten.</li>
+                    </ul>`
+            },
+            4: {
                 title: 'Hva skal meldes ved endring (ORGH.DEC.100 b)',
                 html: `
                     <p>Notatet gjelder to steder i skjemaet: boksen <em>Revisjon av samsvarserklæring</em> (vises bare i modus 2), der søkeren krysser av for hva endringen gjelder, og bekreftelsen <em>Melding om endringer</em>. Avkrysningslisten i revisjonsboksen er de seks punktene i ORGH.DEC.100 b).</p>
@@ -1598,17 +1609,17 @@
                         (c) A GH organisation only needs to ensure that the competent authority has the latest version of its documentation, including the items mentioned above, in due time before an inspection or audit.</p>
                     </details>`
             },
-            4: {
+            5: {
                 title: 'Avvikling av bakketjenester (ORGH.DEC.105)',
                 html: `
                     <p>Boksen vises bare når brukeren har valgt <em>Avvikling av drift</em> på startsiden (<strong>modus 3</strong>, se Notat 2). Den brukes når aktøren skal slutte for godt med bakketjenester på én eller flere lufthavner.</p>
                     <p><strong>Ønsket oppførsel:</strong></p>
                     <ul>
-                        <li>Underfeltene (omfang, dato og bekreftelser) vises alltid i denne modusen. Avkrysningsboksen øverst er selve bekreftelsen etter ORGH.DEC.105 og skal være obligatorisk.</li>
-                        <li>Når <em>«bare disse lufthavnene»</em> er valgt, låses tekstfeltet opp. I Altinn bør feltet helst være en flervalgsliste over lufthavnene i samsvarserklæringen (forhåndsutfylt fra EMPIC).</li>
+                        <li>Underfeltene (omfang, dato og bekreftelser) vises alltid i denne modusen. Avkrysningsboksen øverst er selve bekreftelsen etter ORGH.DEC.105, og vi ønsker at den er obligatorisk.</li>
+                        <li>Når <em>«bare disse lufthavnene»</em> er valgt, låses tekstfeltet opp. I Altinn ønsker vi helst at feltet er en flervalgsliste over lufthavnene i samsvarserklæringen (forhåndsutfylt fra EMPIC).</li>
                         <li>I denne modusen viser skjemaet bare organisasjonens navn, ansvarlig leder, avviklingsboksen, «Riktige opplysninger» og signatur. Øvrige seksjoner og vedlegg er skjult.</li>
                         <li>Når aktøren bare slutter på noen av lufthavnene, er dette samtidig en endring etter ORGH.DEC.100 b) (en lufthavn faller bort). Den aktuelle lufthavnen og vedlegget for den skal da fjernes fra samsvarserklæringen.</li>
-                        <li>Datoen for opphør er obligatorisk.</li>
+                        <li>Vi ønsker at datoen for opphør er obligatorisk.</li>
                     </ul>
                     <p>Boksen og teksten er ikke en del av Appendix 1 i forordningen. De er laget for å dekke kravene i ORGH.DEC.105 i samme skjema.</p>
                     <p><strong>Til avklaring:</strong> Etter ordlyden skal varselet etter bokstav a) sendes «as soon as possible». Anmodningen om avregistrering etter bokstav b) skal sendes «upon the date of termination», altså når tjenestene faktisk opphører. Prototypen samler begge stegene i én innsending, der anmodningen gjelder fra opphørsdatoen. Saksbehandlingen må avklare om dette holder, eller om avregistreringen skal bekreftes i en egen innsending på opphørsdatoen.</p>
@@ -1624,13 +1635,13 @@
                         The prior notice of terminating the provision of GH services at an aerodrome should be given with sufficient time in advance to enable the aerodrome operator to take appropriate measures for the continuation of the services at that aerodrome, if necessary.</p>
                     </details>`
             },
-            5: {
+            6: {
                 title: 'Veiledning (Principal place of business)',
                 html: `
                     <p>Søkeren trenger veiledning for å fylle ut dette feltet riktig. Veiledningen vises via hjelpetekst-knappen (<strong>?</strong>) ved feltet.</p>
                     <p>Hjelpeteksten er en forenklet versjon på klarspråk av veiledningen til ORGH.GEN.105. Den forklarer
                     (1) hvordan søkeren finner organisasjonens hovedforretningssted, og (2) hvorfor dette er viktig, det vil si hvilken myndighet samsvarserklæringen hører til.
-                    Teksten ønskes brukt slik som den står.</p>
+                    Vi ønsker gjerne at teksten brukes slik den står.</p>
                     <details>
                         <summary>Kildetekst (fullstendig veiledning – kun til referanse)</summary>
                         <p><strong>GH-ORGANISASJONERS HOVEDFORRETNINGSSTED</strong></p>
@@ -1648,11 +1659,11 @@
                         <p>Slike GH-organisasjoner sender inn en samsvarserklæring til vedkommende myndighet i hver medlemsstat der de yter tjenester.</p>
                     </details>`
             },
-            6: {
-                title: 'Gjensidig utelukkende valg',
-                html: `<p>Brukeren skal bare kunne velge én av de tre organisasjonstypene. Valgene utelukker hverandre, og valgene som ikke er aktive, skal gråes ut og låses.</p>`
-            },
             7: {
+                title: 'Gjensidig utelukkende valg',
+                html: `<p>Vi ønsker at brukeren bare kan velge én av de tre organisasjonstypene. Valgene utelukker hverandre, og vi ønsker at valgene som ikke er aktive, gråes ut og låses.</p>`
+            },
+            8: {
                 title: 'Frist på 10 virkedager (AMC1 ORGH.DEC.100)',
                 html: `
                     <p>Hjelpeteksten forteller søkeren at samsvarserklæringen, eller en endret samsvarserklæring, bør sendes inn minst <strong>10 virkedager</strong> før oppstart eller før endringen trer i kraft.</p>
@@ -1662,7 +1673,7 @@
                         <li>fristen står i en AMC (akseptabel samsvarsmetode), ikke i selve forordningen</li>
                         <li>organisasjoner som allerede var i drift da forordningen begynte å gjelde (27. mars 2028), skal oppgi innsendingsdatoen og følger artikkel 5 i stedet</li>
                     </ul>
-                    <p>Prototypen regner bare med lørdag og søndag som fridager. I Altinn bør norske helligdager også trekkes fra.</p>
+                    <p>Prototypen regner bare med lørdag og søndag som fridager. I Altinn ønsker vi at norske helligdager også trekkes fra.</p>
                     <p>Den samme varslingen er lagt på «Starting date of operation at this aerodrome» i vedlegget.</p>
                     <p><strong>Forslag:</strong> Organisasjoner som allerede er i drift, sender samsvarserklæringen etter en plan som avtales med myndigheten (artikkel 5). Skjemaet kan eventuelt spørre om organisasjonen allerede er i drift, og i så fall slå av varslingen.</p>
                     <details>
@@ -1677,13 +1688,13 @@
                         2. It shall apply from 27 March 2028.</p>
                     </details>`
             },
-            8: {
-                title: 'Oppslag av ICAO-koder',
-                html: `<p>Når brukeren taster inn en ICAO-kode på fire bokstaver (f.eks. ENBO), bør koden slås opp i et register i bakgrunnen. Da fylles lufthavnens navn («Aerodrome name») og land («State») ut automatisk. Det hindrer skrivefeil og sikrer god datakvalitet.</p>`
-            },
             9: {
+                title: 'Oppslag av ICAO-koder',
+                html: `<p>Når brukeren taster inn en ICAO-kode på fire bokstaver (f.eks. ENBO), ønsker vi at koden slås opp i et register i bakgrunnen. Da fylles lufthavnens navn («Aerodrome name») og land («State») ut automatisk. Det hindrer skrivefeil og sikrer god datakvalitet.</p>`
+            },
+            10: {
                 title: 'Utdypende informasjon (Arrangements)',
-                html: `<p><strong>Spesifikt krav fra EASA:</strong> Bare avkrysningsboksen og bekreftelsesteksten skal være synlige i skjemaet. Underpunktene a)–d) skal <em>ikke</em> stå i selve erklæringsteksten. De vises i stedet i informasjonsboksen som åpnes med hjelpetekst-knappen (<strong>?</strong>). Dette avviker fra Appendix 1 i forordningen, der punktene står i erklæringsteksten («such as but not limited to»).</p>
+                html: `<p><strong>Spesifikt krav fra EASA:</strong> Vi ønsker derfor at bare avkrysningsboksen og bekreftelsesteksten er synlige i skjemaet, og at underpunktene a)–d) <em>ikke</em> står i selve erklæringsteksten. De vises i stedet i informasjonsboksen som åpnes med hjelpetekst-knappen (<strong>?</strong>). Dette avviker fra Appendix 1 i forordningen, der punktene står i erklæringsteksten («such as but not limited to»).</p>
                     <ul>
                         <li>Informasjonsboksen forklarer punktene på klarspråk, på norsk eller engelsk etter valgt språk.</li>
                         <li>Punktene er ikke noe brukeren svarer på. Brukeren bekrefter bare avkrysningsboksen.</li>
@@ -1696,33 +1707,17 @@
                         d) participation in the aerodrome safety committees.</p>
                     </details>`
             },
-            10: {
-                title: 'Veiledning (Consent to publish)',
-                html: `<p>Valgene skal ha en hjelpetekst som forklarer hva det betyr å svare «Ja»/«Yes» og «Nei»/«No». Teksten vises via hjelpetekst-knappen (<strong>?</strong>).</p>`
-            },
             11: {
-                title: 'Gebyr (gebyrforskriften)',
-                html: `
-                    <p>Søkeren skal få vite at innsending av samsvarserklæringen utløser gebyr etter forskrift om gebyr til Luftfartstilsynet (gebyrforskriften). Informasjonen vises på to steder:</p>
-                    <ul>
-                        <li>på startsiden, under valgene <em>Ny samsvarserklæring</em> og <em>Revisjon av samsvarserklæring</em></li>
-                        <li>som egen boks («Gebyr») rett før signaturen, med hjelpetekst</li>
-                    </ul>
-                    <p><strong>Til avklaring før produksjon:</strong></p>
-                    <ul>
-                        <li>Hvilken paragraf i gebyrforskriften som gjelder, og om satsen skal stå i skjemaet. Forskriften fastsettes årlig, så en sats i skjemateksten må oppdateres hvert år. Teksten i prototypen nevner derfor ikke paragraf eller beløp.</li>
-                        <li>Om revisjon av samsvarserklæring utløser samme gebyr som en ny samsvarserklæring, et lavere gebyr eller ikke noe gebyr. Prototypen viser gebyrinformasjonen ved både ny og revisjon.</li>
-                        <li>Om avvikling av drift er gebyrfritt. Prototypen viser ikke gebyrinformasjon ved avvikling.</li>
-                        <li>Lenke til gjeldende forskrift på Lovdata og til Luftfartstilsynets gebyrside bør legges inn i hjelpeteksten.</li>
-                    </ul>`
+                title: 'Veiledning (Consent to publish)',
+                html: `<p>Vi ønsker at valgene har en hjelpetekst som forklarer hva det betyr å svare «Ja»/«Yes» og «Nei»/«No». Teksten vises via hjelpetekst-knappen (<strong>?</strong>).</p>`
             },
             12: {
                 title: 'Autentisering / Signatur',
-                html: `<p>Dette feltet viser bare at samsvarserklæringen må signeres. Den faktiske, juridiske signeringen av «Accountable Manager» skal skje gjennom plattformens vanlige innlogging og autentisering når skjemaet sendes inn.</p>`
+                html: `<p>Dette feltet viser bare at samsvarserklæringen må signeres. Vi ønsker at den faktiske, juridiske signeringen av «Accountable Manager» skjer gjennom plattformens vanlige innlogging og autentisering når skjemaet sendes inn.</p>`
             },
             13: {
                 title: 'Repeterende Annex-seksjon',
-                html: `<p>Brukeren må kunne legge til flere lufthavner. Hele «Annex»-seksjonen må kunne dupliseres for hver ny lufthavn aktøren legger inn, slik at aktøren kan knytte bestemte tjenester til hver enkelt stasjon de opererer på.</p>`
+                html: `<p>Vi ønsker at brukeren kan legge til flere lufthavner, og at hele «Annex»-seksjonen kan dupliseres for hver ny lufthavn aktøren legger inn, slik at aktøren kan knytte bestemte tjenester til hver enkelt stasjon de opererer på.</p>`
             }
         };
 
@@ -1774,7 +1769,7 @@
         });
 
         // =====================================================================
-        // AVVIKLING AV BAKKETJENESTER (Notat 4)
+        // AVVIKLING AV BAKKETJENESTER (Notat 5)
         // =====================================================================
         const termAerodromes = document.getElementById('f-term-aerodromes');
         document.querySelectorAll('input[name="termScope"]').forEach(r =>
@@ -1785,7 +1780,7 @@
             }));
 
         // =====================================================================
-        // 10 VIRKEDAGER-VARSLING (Notat 7) – helligdager er ikke med i prototypen
+        // 10 VIRKEDAGER-VARSLING (Notat 8) – helligdager er ikke med i prototypen
         // =====================================================================
         function addWorkingDays(from, n) {
             const d = new Date(from.getFullYear(), from.getMonth(), from.getDate());
@@ -1868,7 +1863,7 @@
             document.body.classList.remove('print-notes');
         });
 
-        // --- Organisasjonstype Logikk (Notat 6) ---
+        // --- Organisasjonstype Logikk (Notat 7) ---
         const orgRadios = document.querySelectorAll('input[name="orgType"]');
         const orgRows = document.querySelectorAll('.org-type-row');
 
@@ -1892,7 +1887,7 @@
             });
         });
 
-        // --- ICAO Database og Autofill Logikk (Notat 8) ---
+        // --- ICAO Database og Autofill Logikk (Notat 9) ---
         const airportDb = {
             // --- NORWAY (Civil Airports) ---
             "ENGM": { name: "Oslo Airport, Gardermoen", state: "Norway" },
